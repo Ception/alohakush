@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js 14 and Sanity.io Project
 
-## Getting Started
+This project is built using Next.js 14 and integrated with Sanity.io for content management. The project is initialized using a custom setup tailored for Next.js 14.
 
-First, run the development server:
+## Initial Setup
 
-```bash
+Begin by launching the local development environment:
+
+\```bash
 npm run dev
-# or
+
+# or alternatively
+
 yarn dev
+
 # or
+
 pnpm dev
+
 # or
+
 bun dev
-```
+\```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Navigate to [http://localhost:3000](http://localhost:3000) in your web browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Modifications can be made in `app/page.tsx`. Changes will reflect immediately during development due to the live-updating feature.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This setup includes enhanced font management with Next.js's built-in optimization, using Inter from Google Fonts.
 
-## Learn More
+## Further Learning
 
-To learn more about Next.js, take a look at the following resources:
+Explore more about Next.js 14 and its capabilities through these resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js 14 Documentation](https://nextjs.org/docs) - comprehensive guide on features and APIs of Next.js 14.
+- [Interactive Next.js Tutorial](https://nextjs.org/learn) - a step-by-step guide to learn Next.js.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+For insights into Sanity.io and how it integrates with Next.js, visit:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Sanity.io Documentation](https://www.sanity.io/docs) - detailed information on using Sanity.io as a content management system.
