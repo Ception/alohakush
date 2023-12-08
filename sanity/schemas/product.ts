@@ -7,11 +7,30 @@ export default {
       name: 'name',
       type: 'string',
       title: 'Name of Product',
-      price: 'number',
     },
     {
       name: 'images',
-      types: 'array',
+      type: 'array',
+      title: 'Product Images',
+      of: [{type: 'image'}],
+    },
+    {
+      name: 'description',
+      type: 'text',
+      title: 'Description of Product',
+    },
+    {
+      name: 'slug',
+      type: 'slug',
+      title: 'Product Slug',
+      options: {
+        source: 'name',
+      },
+    },
+    {
+      name: 'price',
+      title: 'Price of Product',
+      type: 'number',
     },
   ],
 }
