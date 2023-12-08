@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'Aloha Kush',
 
-  projectId: 'i91b6nwz',
+  projectId: 'ro24hjqv',
   dataset: 'production',
 
   plugins: [deskTool(), visionTool()],
