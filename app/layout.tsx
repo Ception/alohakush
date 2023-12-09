@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Ubuntu } from "next/font/google";
 import "./globals.css";
+import Navbar from "./_components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
+const ubuntu = Ubuntu({ subsets: ["latin"], weight: "400", style: "normal" });
 
 export const metadata: Metadata = {
   title: "Aloha Kush — Premium Cannabis Delivery",
@@ -17,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={ubuntu.className}>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
