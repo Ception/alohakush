@@ -17,7 +17,7 @@ export default function Navbar() {
   const [isHover, setHover] = useState(false);
   const pathName = usePathname();
   return (
-    <header className="mb-8 border-b">
+    <header className="fixed top-0 left-0 w-full z-50 bg-white border-b">
       <div className="flex items-center justify-between mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl">
         <Link href="/">
           <h1 className="md:text-4xl text-2xl">
