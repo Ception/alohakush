@@ -1,12 +1,12 @@
-# Next.js 14 and Sanity.io Project
+# Next.js 14 and Strapi Project
 
-This project is built using Next.js 14 and integrated with Sanity.io for content management. The project is initialized using a custom setup tailored for Next.js 14.
+This project is built using Next.js 14 and integrated with Strapi for content management. The project is initialized using a custom setup tailored for Next.js 14.
 
 ## Initial Setup
 
 Begin by launching the local development environment:
 
-\```bash
+```bash
 npm run dev
 
 # or alternatively
@@ -20,7 +20,7 @@ pnpm dev
 # or
 
 bun dev
-\```
+```
 
 Navigate to [http://localhost:3000](http://localhost:3000) in your web browser to view the application.
 
@@ -35,6 +35,6 @@ Explore more about Next.js 14 and its capabilities through these resources:
 - [Next.js 14 Documentation](https://nextjs.org/docs) - comprehensive guide on features and APIs of Next.js 14.
 - [Interactive Next.js Tutorial](https://nextjs.org/learn) - a step-by-step guide to learn Next.js.
 
-For insights into Sanity.io and how it integrates with Next.js, visit:
+For insights into Strapi and how it integrates with Next.js, visit:
 
-- [Sanity.io Documentation](https://www.sanity.io/docs) - detailed information on using Sanity.io as a content management system.
+- [Strapi Documentation](https://strapi.io/documentation) - detailed information on using Strapi as a content management system.
