@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
-import Navbar from "./_components/Header";
+import Header from "./_components/Header";
 
 const ubuntu = Ubuntu({ subsets: ["latin"], weight: "400", style: "normal" });
 
@@ -19,8 +19,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={ubuntu.className}>
-        <Navbar />
-        <main className="relative flex flex-col justify-center px-12 pt-12 sm:px-20 sm:pt-20 md:px-24 md:pt-24 h-full w-full overflow-auto">
+        <Header />
+        <main className="relative flex justify-center px-12 pt-12 sm:px-20 sm:pt-20 md:px-24 md:pt-24 h-screen w-full overflow-hidden">
           {children}
         </main>
       </body>
