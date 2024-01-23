@@ -13,7 +13,7 @@ const links = [
   { name: "Contact", href: "/contact" },
 ];
 
-export default function Header() {
+export default function Navbar() {
   const [isHover, setHover] = useState(false);
   const pathName = usePathname();
   return (
