@@ -1,21 +1,25 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   return (
     <section className="mx-auto w-full h-full p-8">
       <div className="flex flex-wrap justify-between">
         {/* left column */}
-        <div className="flex w-1/4 flex-col justify-center pr-4 space-y-4 py-4">
-          <h1 className="text-4xl font-bold text-black sm:text-5xl md:text-6xl leading-relaxed">
+        <div className="flex w-1/4 flex-col justify-center px-4 space-y-4 py-4">
+          <h1 className="text-4xl font-bold text-black sm:text-5xl md:text-6xl leading-tight">
             High quality Cannabis, at your fingertips!
           </h1>
-          <p className="max-w-md text-gray-500 xl:text-lg leading-relaxed">
+          <p className="text-gray-500 xl:text-lg leading-relaxed">
             We sell only the best quality cannabis products. We are the best in
             the business
           </p>
-          <button className="bg-primary text-white py-2 px-4 rounded hover:bg-sky-600 transition">
+          <Link
+            href="/shop"
+            className="text-lg bg-primary text-white py-2 px-4 rounded hover:bg-sky-600 transition text-center"
+          >
             SHOP OUR CATALOG
-          </button>
+          </Link>
         </div>
         <div className="flex w-3/4 lg:w-2/3">
           <div className="relative left-12 top-12 z-10 -ml-12 overflow-hidden rounded-xl bg-gray-100 shadow-lg">
