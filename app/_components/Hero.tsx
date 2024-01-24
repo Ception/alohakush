@@ -9,7 +9,7 @@ export default function Hero() {
           <h1 className="text-4xl font-bold text-black sm:text-5xl md:text-6xl leading-relaxed">
             High quality Cannabis, at your fingertips!
           </h1>
-          <p className="max-w-md leading-relaxed text-gray-500 xl:text-lg leading-relaxed">
+          <p className="max-w-md text-gray-500 xl:text-lg leading-relaxed">
             We sell only the best quality cannabis products. We are the best in
             the business
           </p>
