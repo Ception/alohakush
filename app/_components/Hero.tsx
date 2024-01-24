@@ -5,11 +5,11 @@ export default function Hero() {
     <section className="mx-auto w-full h-full p-8">
       <div className="flex flex-wrap justify-between">
         {/* left column */}
-        <div className="flex w-1/4 flex-col justify-center pr-4">
-          <h1 className="text-4xl font-bold text-black sm:text-5xl md:text-6xl">
+        <div className="flex w-1/4 flex-col justify-center pr-4 space-y-4 py-4">
+          <h1 className="text-4xl font-bold text-black sm:text-5xl md:text-6xl leading-relaxed">
             High quality Cannabis, at your fingertips!
           </h1>
-          <p className="max-w-md leading-relaxed text-gray-500 xl:text-lg">
+          <p className="max-w-md leading-relaxed text-gray-500 xl:text-lg leading-relaxed">
             We sell only the best quality cannabis products. We are the best in
             the business
           </p>
