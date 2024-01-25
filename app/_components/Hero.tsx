@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="mx-auto w-full h-full p-8">
+    <section className="mx-auto w-full h-full">
       <div className="flex flex-wrap justify-between">
         {/* left column */}
         <div className="flex w-1/4 flex-col justify-center px-4 space-y-4 py-4">
