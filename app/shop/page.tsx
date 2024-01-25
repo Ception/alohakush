@@ -8,7 +8,7 @@ export default function Shop() {
     "https://images.unsplash.com/photo-1621390648089-9fac21b001fa?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   ];
   return (
-    <div className="bg-white">
+    <div className="bg-white pt-4">
       <div className="mx-auto max-w-screen-xl px-4">
         <div className="grid gap-8 grid-cols-2">
           <ImageGallery images={images} />
