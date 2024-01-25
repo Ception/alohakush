@@ -52,6 +52,10 @@ export default function ImageGallery({ images }: imageGalleryProps) {
           className="object-cover object-center"
           style={{ width: "100%", height: "100%" }}
         />
+
+        <span className="absolute left-0 top-0 rounded-br-xl bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">
+          SALE
+        </span>
       </div>
     </div>
   );
