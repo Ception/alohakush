@@ -21,7 +21,7 @@ export default function ImageGallery({ images }: imageGalleryProps) {
     thumbnailElements.push(
       <div
         key={i}
-        className="flex-1 overflow-hidden rounded bg-gray-100 relative"
+        className="flex overflow-hidden rounded bg-gray-100 relative"
         style={{ paddingTop: "100%" }}
       >
         {displayedImages[i] ? (
@@ -43,7 +43,7 @@ export default function ImageGallery({ images }: imageGalleryProps) {
   return (
     <div className="grid gap-4 grid-cols-5">
       <div className="flex flex-col gap-4 col-span-1">{thumbnailElements}</div>
-      <div className="relative overflow-hidden rounded bg-gray-100 col-span-4">
+      <div className="relative overflow-hidden rounded bg-gray-100 col-span-4 h-3/4">
         <Image
           src={mainImage}
           alt="main product image"

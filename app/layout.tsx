@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={ubuntu.className}>
         <Navbar />
-        <main className="relative flex px-24 pt-24 min-h-screen w-full overflow-auto">
+        <main className="relative flex px-24 pt-20 min-h-screen w-full overflow-auto">
           {children}
         </main>
       </body>
