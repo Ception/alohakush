@@ -100,7 +100,7 @@ export default function Category({ params }: { params: { category: string } }) {
               <div className="mt-4 flex justify-between">
                 <div>
                   <h3 className="text-sm text-gray-700">
-                    <Link href={`/product/${product.slug}`}>
+                    <Link href={`/shop/product/${product.slug}`}>
                       <span>{product.name}</span>
                     </Link>
                   </h3>

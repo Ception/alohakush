@@ -1,13 +1,14 @@
 import {
-  Tag,
   ShoppingBag,
   Truck,
   CheckCheck,
   ExternalLink,
+  ChevronRight,
 } from "lucide-react";
 import ImageGallery from "../../../_components/ImageGallery";
 import { Button } from "../../../_components/ui/button";
 import { API, AUTH_TOKEN } from "@/app/page";
+import Link from "next/link";
 
 interface fullProduct {
   id: number;
@@ -72,43 +73,65 @@ export default async function Product({
   );
 
   return (
-    <div className="mx-auto max-w-7xl pt-32 px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl pt-24 px-4 sm:px-6 lg:px-8">
       <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
         <ImageGallery images={images} sale={data[0].sale} />
         <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
           {data.length > 0 && (
             <div className="flex flex-col justify-between p-6 h-full">
               <div>
-                <span className="block text-gray-500 text-xs uppercase tracking-widest">
-                  {data[0].categoryName}
-                </span>
+                <div className="flex justify-between items-center">
+                  <span className="flex text-gray-500 text-xs uppercase tracking-widest">
+                    <Link
+                      href={`/shop/${data[0].categoryName.toLowerCase()}`}
+                      className="hover:underline"
+                    >
+                      {data[0].categoryName}
+                    </Link>
+                    <ChevronRight className="h-2 w-2 m-auto" />
+                    {data[0].flower}
+                  </span>
+                  <p className="text-sm text-gray-700">
+                    Stock:{" "}
+                    <span className="underline text-orange-500 hover:text-yellow-400 cursor-pointer">
+                      {data[0].quantity}
+                    </span>
+                  </p>
+                </div>
                 <h2 className="text-4xl font-bold text-gray-800 my-2">
                   {data[0].name}
                 </h2>
 
-                {data[0].sale ? (
-                  <div className="my-4">
-                    <span className="text-3xl font-bold text-gray-800">
-                      ${data[0].price}
+                <div className="flex justify-center items-center p-4">
+                  {data[0].sale ? (
+                    <>
+                      <span className="text-4xl font-bold text-gray-800">
+                        $<span className="underline">{data[0].price}</span>
+                      </span>
+                      <span className="text-lg text-red-500 line-through ml-2">
+                        ${data[0].originalPrice}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-4xl font-bold text-gray-800">
+                      $<span className="underline">{data[0].price}</span>
                     </span>
-                    <span className="text-lg text-red-500 line-through ml-2">
-                      ${data[0].originalPrice}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="my-4">
-                    <span className="text-3xl font-bold text-gray-800">
-                      ${data[0].price}
-                    </span>
-                  </div>
-                )}
-                <p className="text-sm text-gray-500 mb-4 p-8">
-                  {data[0].description}
-                </p>
+                  )}
+                </div>
+
+                <div className="p-4">
+                  <h4 className="text-xs text-gray-700 mb-0.5 underline">
+                    Description:
+                  </h4>
+                  <p className="text-sm text-gray-500 mb-4">
+                    {data[0].description}
+                  </p>
+                </div>
               </div>
+
               <div>
                 <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                  <Button className="flex items-center justify-center px-6 py-3 hover:bg-orange-400 text-white rounded shadow-sm transition duration-150 ease-in-out w-full">
+                  <Button className="flex items-center justify-center px-6 py-3 hover:bg-yellow-400 text-white rounded shadow-sm transition duration-150 ease-in-out w-full">
                     <ShoppingBag className="h-5 w-6" />
                     <span className="ml-2">Add To Bag</span>
                   </Button>

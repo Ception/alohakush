@@ -67,6 +67,7 @@ export default function ImageGallery({
               className="object-center"
               width={400}
               height={400}
+              priority={true}
               style={{
                 objectFit: "cover",
                 position: "absolute",
