@@ -42,7 +42,7 @@ export default function ImageGallery({ images }: imageGalleryProps) {
 
   return (
     <div className="grid gap-4 grid-cols-5">
-      <div className="flex flex-col gap-4 col-span-1">{thumbnailElements}</div>
+      <div className="flex flex-col gap-2 col-span-1">{thumbnailElements}</div>
       <div className="relative overflow-hidden rounded bg-gray-100 col-span-4 h-3/4">
         <Image
           src={mainImage}
@@ -53,7 +53,7 @@ export default function ImageGallery({ images }: imageGalleryProps) {
           style={{ width: "100%", height: "100%" }}
         />
 
-        <span className="absolute left-0 top-0 rounded-br-xl bg-red-500 px-3 py-1.5 text-sm uppercase tracking-wider text-white">
+        <span className="absolute left-0 top-0 rounded-br-xl bg-red-500 px-3 py-1.5 text-2xl uppercase tracking-wider text-white">
           SALE
         </span>
       </div>
