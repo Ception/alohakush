@@ -19,25 +19,10 @@ interface fullProduct {
   categoryName: string;
 }
 
-function mapToProduct(data: any): fullProduct {
-  return {
-    id: data.id,
-    description: data.attributes.description,
-    price: data.attributes.price,
-    smallImageUrl:
-      data.attributes.image?.data[0]?.attributes.formats.small.url ??
-      "DefaultImageUrl",
-    slug: data.attributes.slug ?? null,
-    name: data.attributes.name,
-    categoryName:
-      data.attributes.categories?.data[0]?.attributes.name ?? "No Category",
-  };
-}
-
-async function getProducts(): Promise<fullProduct[]> {
+async function getProduct(name: string): Promise<fullProduct[]> {
   try {
     const response = await fetch(
-      `${API}/products?populate=*&sort=updatedAt:DESC`,
+      `${API}/products?filters[name][$eq]=${name}&populate=*`,
       {
         headers: {
           Authorization: `Bearer ${AUTH_TOKEN}`,
@@ -50,9 +35,18 @@ async function getProducts(): Promise<fullProduct[]> {
     }
 
     const jsonResponse = await response.json();
-    const products = jsonResponse.data.map(mapToProduct);
-    console.log("Mapped Products:", products);
-    return products;
+    return jsonResponse.data.map((item: any) => ({
+      id: item.id,
+      description: item.attributes.description,
+      price: item.attributes.price,
+      smallImageUrl:
+        item.attributes.image?.data[0]?.attributes.formats.small.url ??
+        "DefaultImageUrl",
+      slug: item.attributes.slug ?? null,
+      name: item.attributes.name,
+      categoryName:
+        item.attributes.categories?.data[0]?.attributes.name ?? "No Category",
+    }));
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];
@@ -62,9 +56,9 @@ async function getProducts(): Promise<fullProduct[]> {
 export default async function Product({
   params,
 }: {
-  params: { slug: string };
+  params: { product: string };
 }) {
-  const data: fullProduct[] = await getProducts();
+  const data: fullProduct[] = await getProduct(params.product);
   const images = data.map((product) => product.smallImageUrl);
 
   return (
