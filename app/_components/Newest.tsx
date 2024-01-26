@@ -5,7 +5,7 @@ import { API, AUTH_TOKEN, SITE_LINK } from "../page";
 
 interface Product {
   id: number;
-  title: string;
+  name: string;
   price: number;
   smallImageUrl: string;
   slug: string | null;
@@ -15,14 +15,14 @@ interface Product {
 function mapToProduct(data: any): Product {
   return {
     id: data.id,
-    title: data.attributes.title,
+    name: data.attributes.name,
     price: data.attributes.price,
     smallImageUrl:
       data.attributes.image?.data[0]?.attributes.formats.small.url ??
       "DefaultImageUrl",
     slug: data.attributes.slug ?? null,
     categoryName:
-      data.attributes.categories?.data[0]?.attributes.Name ?? "No Category",
+      data.attributes.categories?.data[0]?.attributes.name ?? "No Category",
   };
 }
 
@@ -85,7 +85,7 @@ export default async function Newest() {
                 <div>
                   <h3 className="text-sm text-gray-700">
                     <Link href={`/product/${product.slug}`}>
-                      {product.title}
+                      {product.name}
                     </Link>
                   </h3>
                   <p className="mt-1 text-xs text-gray-500">

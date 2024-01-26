@@ -11,7 +11,7 @@ import { API, AUTH_TOKEN } from "@/app/page";
 
 interface fullProduct {
   id: number;
-  title: string;
+  name: string;
   description: string;
   price: number;
   smallImageUrl: string;
@@ -22,7 +22,7 @@ interface fullProduct {
 function mapToProduct(data: any): fullProduct {
   return {
     id: data.id,
-    title: data.attributes.title,
+    name: data.attributes.name,
     description: data.attributes.description,
     price: data.attributes.price,
     smallImageUrl:
@@ -30,7 +30,7 @@ function mapToProduct(data: any): fullProduct {
       "DefaultImageUrl",
     slug: data.attributes.slug ?? null,
     categoryName:
-      data.attributes.categories?.data[0]?.attributes.Name ?? "No Category",
+      data.attributes.categories?.data[0]?.attributes.name ?? "No Category",
   };
 }
 
@@ -77,7 +77,7 @@ export default async function Product({
               {data[0].categoryName}
             </span>
             <h2 className="text-4xl font-bold text-gray-800 mt-1">
-              {data[0].title}
+              {data[0].name}
             </h2>
           </div>
 

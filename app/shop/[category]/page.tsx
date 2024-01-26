@@ -7,7 +7,7 @@ import Loading from "@/loading";
 
 interface Product {
   id: number;
-  title: string;
+  name: string;
   price: number;
   smallImageUrl: string;
   slug: string | null;
@@ -15,7 +15,7 @@ interface Product {
 }
 
 interface CategoryAttributes {
-  Name: string;
+  name: string;
   slug: string;
 }
 
@@ -37,7 +37,7 @@ async function getProductsByCategorySlug(
     const jsonResponse = await response.json();
     return jsonResponse.data.map((item: any) => ({
       id: item.id,
-      title: item.attributes.title,
+      name: item.attributes.name,
       price: item.attributes.price,
       smallImageUrl:
         item.attributes.image?.data[0]?.attributes.formats.small.url ??
@@ -78,7 +78,7 @@ export default function Category({ params }: { params: { category: string } }) {
 
   return (
     <div className="bg-white">
-      <div className="mx-auto w-full px-6 py-24">
+      <div className="mx-auto w-full p-12">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl tracking-tight text-gray-900">
             All things {params.category}!
@@ -101,7 +101,7 @@ export default function Category({ params }: { params: { category: string } }) {
                 <div>
                   <h3 className="text-sm text-gray-700">
                     <Link href={`/product/${product.slug}`}>
-                      <span>{product.title}</span>
+                      <span>{product.name}</span>
                     </Link>
                   </h3>
                   <p className="mt-1 text-xs text-gray-500">

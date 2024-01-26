@@ -11,7 +11,7 @@ export default function Hero() {
             High quality Cannabis, at your fingertips!
           </h1>
           <Link
-            href="/shop"
+            href="shop"
             className="text-lg bg-primary text-white py-4 px-4 rounded hover:bg-sky-600 transition text-center"
           >
             SHOP OUR CATALOG

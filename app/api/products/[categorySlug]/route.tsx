@@ -20,6 +20,7 @@ export async function GET(req: NextApiRequest, { params }: any) {
     }
 
     const jsonResponse = await response.json();
+    console.log(JSON.stringify(jsonResponse));
     return new Response(JSON.stringify(jsonResponse), {
       status: 200,
       headers: {
