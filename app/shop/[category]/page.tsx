@@ -1,50 +1,120 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { API, AUTH_TOKEN, SITE_LINK } from "@/app/page";
 
-export default function Category() {
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  smallImageUrl: string;
+  slug: string | null;
+  categoryName: string;
+}
+
+interface CategoryAttributes {
+  Name: string;
+  slug: string;
+}
+
+interface Category {
+  id: number;
+  attributes: CategoryAttributes;
+}
+
+async function getProductsByCategorySlug(
+  categorySlug: string
+): Promise<Product[]> {
+  try {
+    const response = await fetch(
+      `${API}/products?filters[category][slug][$eq]=${categorySlug}&populate=image`,
+      {
+        headers: {
+          Authorization: `Bearer ${AUTH_TOKEN}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const jsonResponse = await response.json();
+    return jsonResponse.data.map((item: any) => ({
+      id: item.id,
+      title: item.attributes.title,
+      price: item.attributes.price,
+      smallImageUrl:
+        item.attributes.image?.data[0]?.attributes.formats.small.url ??
+        "DefaultImageUrl",
+      slug: item.attributes.slug,
+      categoryName: categorySlug,
+    }));
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
+}
+
+export default function Category({ params }: { params: { category: string } }) {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      const fetchedProducts = await getProductsByCategorySlug(params.category);
+      setProducts(fetchedProducts);
+    }
+
+    fetchProducts();
+  }, [params.category]);
+
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-6 py-24">
+      <div className="mx-auto w-full px-6 py-24">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl tracking-tight text-gray-900">
-            Our Newest Products
+            All things {params.category}!
           </h2>
-
-          <Link href="/all" className="text-primary flex items-center gap-x-1">
-            View All
-            <span>
-              <ArrowRight />
-            </span>
-          </Link>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-10">
-          {/* THIS WILL HAVE TO GET MAPPED FOR PRODUCTION! */}
-          <div key="" className="group relative">
-            <div className="aspect-square w-full overflow-hidden rounded bg-gray-200 group-hover:opacity-75">
-              <Image
-                src="https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-01.jpg"
-                alt=""
-                width={300}
-                height={300}
-                className="w-full h-full object-cover object-center custom-object-fit"
-              />
-            </div>
-            <div className="mt-4 flex justify-between">
-              <div>
-                <h3 className="text-sm text-gray-700">
-                  {/* HAVE TO ADD PRODUCT SLUG */}
-                  <Link href="/product/">Product Name</Link>
-                </h3>
-                <p className="mt-1 text-xs text-gray-500">Product CATEGORY</p>
+        <div className="mt-6 grid grid-cols-4 gap-x-6 gap-y-10">
+          {products.map((product: Product) => (
+            <div key={product.id} className="group relative">
+              <div className="aspect-square w-full overflow-hidden rounded bg-gray-200 group-hover:opacity-75 lg:h-80 cursor-pointer">
+                <Image
+                  src={`${SITE_LINK}${product.smallImageUrl}`}
+                  alt="Product image"
+                  width={300}
+                  height={300}
+                  className="w-full h-full object-cover object-center custom-object-fit lg:h-full lg:w-full"
+                />
               </div>
-              <p className="text-sm text-gray-900">$ PRODUCT PRICE</p>
+              <div className="mt-4 flex justify-between">
+                <div>
+                  <h3 className="text-sm text-gray-700">
+                    <Link href={`/product/${product.slug}`}>
+                      <a>{product.title}</a>
+                    </Link>
+                  </h3>
+                  <p className="mt-1 text-xs text-gray-500">
+                    {product.categoryName}
+                  </p>
+                </div>
+                <p className="text-sm text-gray-900">${product.price}</p>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
-        {/* THIS WHOLE SECTION */}
       </div>
     </div>
   );
+}
+
+// Fetch the category slug from the URL
+export async function getServerSideProps({ params }: { params: any }) {
+  return {
+    props: {
+      categorySlug: params.category,
+    },
+  };
 }

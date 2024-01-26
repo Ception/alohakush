@@ -1,5 +1,4 @@
 import Hero from "./_components/Hero";
-import Newest from "./_components/Newest";
 
 export const isDevelopment = process.env.ENABLE_DEV === "true";
 export const API = isDevelopment
