@@ -5,6 +5,12 @@ const nextConfig = {
       {
         hostname: "images.unsplash.com",
       },
+      {
+        hostname: "tailwindui.com",
+      },
+      {
+        hostname: "cms.alohakush.ca",
+      },
     ],
   },
 };
