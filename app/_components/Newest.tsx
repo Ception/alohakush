@@ -5,22 +5,22 @@ import { API, AUTH_TOKEN, SITE_LINK } from "../page";
 
 interface Product {
   id: number;
-  name: string;
   price: number;
   smallImageUrl: string;
   slug: string | null;
+  name: string;
   categoryName: string;
 }
 
 function mapToProduct(data: any): Product {
   return {
     id: data.id,
-    name: data.attributes.name,
     price: data.attributes.price,
     smallImageUrl:
       data.attributes.image?.data[0]?.attributes.formats.small.url ??
       "DefaultImageUrl",
     slug: data.attributes.slug ?? null,
+    name: data.attributes.name,
     categoryName:
       data.attributes.categories?.data[0]?.attributes.name ?? "No Category",
   };

@@ -7,16 +7,16 @@ import Loading from "@/loading";
 
 interface Product {
   id: number;
-  name: string;
   price: number;
   smallImageUrl: string;
   slug: string | null;
+  name: string;
   categoryName: string;
 }
 
 interface CategoryAttributes {
-  name: string;
   slug: string;
+  name: string;
 }
 
 interface Category {
@@ -37,12 +37,12 @@ async function getProductsByCategorySlug(
     const jsonResponse = await response.json();
     return jsonResponse.data.map((item: any) => ({
       id: item.id,
-      name: item.attributes.name,
       price: item.attributes.price,
       smallImageUrl:
         item.attributes.image?.data[0]?.attributes.formats.small.url ??
         "DefaultImageUrl",
       slug: item.attributes.slug,
+      name: item.attributes.name,
       categoryName: categorySlug,
     }));
   } catch (error) {
