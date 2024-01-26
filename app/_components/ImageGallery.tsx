@@ -7,7 +7,10 @@ interface imageGalleryProps {
   images: string[];
 }
 
-export default function ImageGallery({ images }: imageGalleryProps) {
+export default function ImageGallery({
+  images,
+  sale,
+}: imageGalleryProps & { sale: boolean }) {
   const [mainImage, setMainImage] = useState(images[0]);
   const displayedImages = images.length > 5 ? images.slice(0, 5) : images;
 
@@ -22,19 +25,25 @@ export default function ImageGallery({ images }: imageGalleryProps) {
       <div
         key={i}
         className="flex overflow-hidden rounded bg-gray-100 relative"
-        style={{ paddingTop: "100%" }}
+        style={{ width: "100%", height: "100%" }}
       >
-        {displayedImages[i] ? (
+        {displayedImages[i] && (
           <Image
             src={displayedImages[i]}
             alt={`thumbnail ${i}`}
-            width={200}
-            height={200}
-            className="absolute top-0 left-0 w-full h-full object-cover cursor-pointer"
+            width={400}
+            height={400}
+            className="cursor-pointer"
+            style={{
+              objectFit: "cover",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+            }}
             onClick={() => handleImageClick(displayedImages[i])}
           />
-        ) : (
-          <div className="absolute inset-0 bg-gray-300" />
         )}
       </div>
     );
@@ -43,19 +52,32 @@ export default function ImageGallery({ images }: imageGalleryProps) {
   return (
     <div className="grid gap-4 grid-cols-5">
       <div className="flex flex-col gap-2 col-span-1">{thumbnailElements}</div>
-      <div className="relative overflow-hidden rounded bg-gray-100 col-span-4 h-3/4">
-        <Image
-          src={mainImage}
-          alt="main product image"
-          width={500}
-          height={500}
-          className="object-cover object-center"
-          style={{ width: "100%", height: "100%" }}
-        />
-
-        <span className="absolute left-0 top-0 rounded-br-xl bg-red-500 px-3 py-1.5 text-2xl uppercase tracking-wider text-white">
-          SALE
-        </span>
+      <div className="relative overflow-hidden rounded bg-gray-100 col-span-4">
+        {/* Fixed-size container for the main image */}
+        <div className="w-full h-full relative">
+          {sale && (
+            <span className="absolute left-0 top-0 rounded-br-xl bg-red-500 px-3 py-1.5 text-2xl uppercase tracking-wider text-white z-10">
+              SALE
+            </span>
+          )}
+          {mainImage && (
+            <Image
+              src={mainImage}
+              alt="Main product image"
+              className="object-center"
+              width={400}
+              height={400}
+              style={{
+                objectFit: "cover",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+              }}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
