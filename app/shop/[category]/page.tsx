@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { API, AUTH_TOKEN, SITE_LINK } from "@/app/page";
+import Loading from "@/loading";
 
 interface Product {
   id: number;
@@ -35,6 +38,10 @@ async function getProductsByCategorySlug(
       }
     );
 
+    console.log(
+      `${API}/products?filters[category][slug][$eq]=${categorySlug}&populate=image`
+    );
+
     if (!response.ok) {
       throw new Error(`Error: ${response.status}`);
     }
@@ -58,15 +65,28 @@ async function getProductsByCategorySlug(
 
 export default function Category({ params }: { params: { category: string } }) {
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchProducts() {
-      const fetchedProducts = await getProductsByCategorySlug(params.category);
-      setProducts(fetchedProducts);
+      try {
+        const fetchedProducts = await getProductsByCategorySlug(
+          params.category
+        );
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     fetchProducts();
   }, [params.category]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="bg-white">
@@ -108,13 +128,4 @@ export default function Category({ params }: { params: { category: string } }) {
       </div>
     </div>
   );
-}
-
-// Fetch the category slug from the URL
-export async function getServerSideProps({ params }: { params: any }) {
-  return {
-    props: {
-      categorySlug: params.category,
-    },
-  };
 }
