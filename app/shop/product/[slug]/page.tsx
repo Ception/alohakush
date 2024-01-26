@@ -7,13 +7,66 @@ import {
 } from "lucide-react";
 import ImageGallery from "../../../_components/ImageGallery";
 import { Button } from "../../../_components/ui/button";
+import { API, AUTH_TOKEN } from "@/app/page";
 
-export default function Product({ params }: { params: { slug: string } }) {
-  const images = [
-    "https://images.unsplash.com/photo-1626106576760-d64336d3fa5b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1536795335207-28f63e2352f0?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1579118459333-b6c080d24b5c?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  ];
+interface fullProduct {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  smallImageUrl: string;
+  slug: string | null;
+  categoryName: string;
+}
+
+function mapToProduct(data: any): fullProduct {
+  return {
+    id: data.id,
+    title: data.attributes.title,
+    description: data.attributes.description,
+    price: data.attributes.price,
+    smallImageUrl:
+      data.attributes.image?.data[0]?.attributes.formats.small.url ??
+      "DefaultImageUrl",
+    slug: data.attributes.slug ?? null,
+    categoryName:
+      data.attributes.categories?.data[0]?.attributes.Name ?? "No Category",
+  };
+}
+
+async function getProducts(): Promise<fullProduct[]> {
+  try {
+    const response = await fetch(
+      `${API}/products?populate=*&sort=updatedAt:DESC`,
+      {
+        headers: {
+          Authorization: `Bearer ${AUTH_TOKEN}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const jsonResponse = await response.json();
+    const products = jsonResponse.data.map(mapToProduct);
+    console.log("Mapped Products:", products);
+    return products;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+}
+
+export default async function Product({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const data: fullProduct[] = await getProducts();
+  const images = data.map((product) => product.smallImageUrl);
+
   return (
     <div className="mx-auto w-full h-full pt-32 px-28 flex justify-center items-center">
       <div className="grid gap-8 grid-cols-2">
@@ -21,10 +74,10 @@ export default function Product({ params }: { params: { slug: string } }) {
         <div className="max-w-2xl h-3/4 mx-auto p-6 bg-white shadow-lg rounded-lg">
           <div className="mb-6">
             <span className="inline-block text-gray-500 text-xs uppercase tracking-widest pl-1">
-              EDIBLES
+              {data[0].categoryName}
             </span>
             <h2 className="text-4xl font-bold text-gray-800 mt-1">
-              ALOHA GUMMIES
+              {data[0].title}
             </h2>
           </div>
 
@@ -32,7 +85,9 @@ export default function Product({ params }: { params: { slug: string } }) {
             <div className="flex items-center gap-1 mb-3 justify-center">
               <div className="flex items-center gap-0">
                 <Tag className="h-6 w-6 text-red-500 pb-1" />
-                <span className="text-3xl font-bold text-gray-800">$14.99</span>
+                <span className="text-3xl font-bold text-gray-800">
+                  {data[0].price}
+                </span>
               </div>
               <span className="text-xs text-red-500 line-through pt-4">
                 $19.99
@@ -40,11 +95,7 @@ export default function Product({ params }: { params: { slug: string } }) {
             </div>
           </div>
 
-          <p className="text-sm text-gray-500 mb-12">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua...
-          </p>
+          <p className="text-sm text-gray-500 mb-12">{data[0].description}</p>
 
           <div className="flex flex-row gap-4">
             <Button className="flex items-center justify-center px-6 py-3 hover:bg-orange-400 text-white rounded shadow-sm transition duration-150 ease-in-out w-full">

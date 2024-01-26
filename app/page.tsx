@@ -15,8 +15,7 @@ export const SITE_LINK = process.env.SITE_URL;
 export default function Home() {
   return (
     <>
-      {/* <Hero /> */}
-      <Newest />
+      <Hero />
     </>
   );
 }
