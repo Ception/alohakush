@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { API, AUTH_TOKEN, SITE_LINK } from "@/app/page";
 import Loading from "@/loading";
 
 interface Product {
@@ -29,18 +28,7 @@ async function getProductsByCategorySlug(
   categorySlug: string
 ): Promise<Product[]> {
   try {
-    const response = await fetch(
-      `${API}/products?filters[category][slug][$eq]=${categorySlug}&populate=image`,
-      {
-        headers: {
-          Authorization: `Bearer ${AUTH_TOKEN}`,
-        },
-      }
-    );
-
-    console.log(
-      `${API}/products?filters[category][slug][$eq]=${categorySlug}&populate=image`
-    );
+    const response = await fetch(`/api/products/${categorySlug}`);
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status}`);
@@ -102,7 +90,7 @@ export default function Category({ params }: { params: { category: string } }) {
             <div key={product.id} className="group relative">
               <div className="aspect-square w-full overflow-hidden rounded bg-gray-200 group-hover:opacity-75 lg:h-80 cursor-pointer">
                 <Image
-                  src={`${SITE_LINK}${product.smallImageUrl}`}
+                  src={`https://cms.alohakush.ca${product.smallImageUrl}`}
                   alt="Product image"
                   width={300}
                   height={300}
@@ -113,7 +101,7 @@ export default function Category({ params }: { params: { category: string } }) {
                 <div>
                   <h3 className="text-sm text-gray-700">
                     <Link href={`/product/${product.slug}`}>
-                      <a>{product.title}</a>
+                      <span>{product.title}</span>
                     </Link>
                   </h3>
                   <p className="mt-1 text-xs text-gray-500">
