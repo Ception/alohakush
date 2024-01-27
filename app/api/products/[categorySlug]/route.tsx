@@ -1,6 +1,6 @@
-import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 
-export async function GET(req: NextApiRequest, { params }: any) {
+export async function GET(req: NextRequest, { params }: any) {
   const API = process.env.API_URL;
   const AUTH_TOKEN = process.env.API_TOKEN;
   const slug = params.categorySlug;
