@@ -178,10 +178,15 @@ export default function Product({ params }: { params: { product: string } }) {
                     </>
                   )}
                 </Button>
-                <Button className="flex items-center justify-center px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white rounded shadow-sm transition duration-150 ease-in-out w-full">
-                  <span className="mr-2">Checkout Now</span>
-                  <ExternalLink className="h-5 w-6" />
-                </Button>
+                <Link href="/checkout">
+                  <Button
+                    className="flex items-center justify-center px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white rounded shadow-sm transition duration-150 ease-in-out w-full"
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    <span className="mr-2">Checkout Now</span>
+                    <ExternalLink className="h-5 w-6" />
+                  </Button>
+                </Link>
               </div>
               <div className="flex justify-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-1">

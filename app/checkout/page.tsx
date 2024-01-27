@@ -37,7 +37,9 @@ export default function Checkout() {
 
   const formSchema = z.object({
     name: z.string().nonempty({ message: "Name is required." }),
-    phone: z.string().regex(phoneRegex, { message: "Invalid phone number.   " }),
+    phone: z
+      .string()
+      .regex(phoneRegex, { message: "Invalid phone number.   " }),
     email: z
       .string()
       .email({ message: "Invalid email address." })
@@ -51,12 +53,37 @@ export default function Checkout() {
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     try {
       formSchema.parse(formData);
-      // TODO: Send order through
+
+      for (let item of cartItems) {
+        const { name, quantity } = item;
+
+        const response = await fetch("/api/sendEmail", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            product: name,
+            quantity: quantity,
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email,
+            city: formData.city,
+            note: formData.note,
+          }),
+        });
+
+        if (response.ok) {
+          console.log(`email sent for ${name} x ${quantity}`);
+        } else {
+          console.error("Failed to send email");
+        }
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
         let validationErrors: Record<string, string> = {};

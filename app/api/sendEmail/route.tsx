@@ -1,20 +1,16 @@
 import { ServerClient } from "postmark";
+import { NextRequest, NextResponse } from "next/server";
 
-export const sendOrderEmail = async (
-  product: string,
-  quantity: number,
-  name: string,
-  phone: string,
-  email: string,
-  city: string,
-  note: string
-) => {
+export async function POST(req: NextRequest) {
+  const { product, quantity, name, phone, email, city, note } =
+    await req.json();
   const apiKey = "42db4870-7870-4b27-8229-14ef90cf9cba";
   const client = new ServerClient(apiKey);
+
   try {
     const response = await client.sendEmailWithTemplate({
       From: "order@alohakush.ca",
-      To: "aleksmanov@outlook.com",
+      To: "aleks@alohakush.ca",
       TemplateAlias: "order",
       TemplateModel: {
         product: product,
@@ -26,8 +22,12 @@ export const sendOrderEmail = async (
         note: note,
       },
     });
-    return response.MessageID;
+    return NextResponse.json({
+      message: "Email sent successfully",
+      messageId: response.MessageID,
+    });
   } catch (error) {
     console.error(`Error: ${error}`);
+    return NextResponse.json({ message: "Failed to send email" });
   }
-};
+}
