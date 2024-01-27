@@ -5,6 +5,8 @@ import { useCart } from "../_components/cart/CartContext";
 import Image from "next/image";
 import { CartItem } from "../_components/cart/CartContext";
 import { z } from "zod";
+import { CheckCircle2 } from "lucide-react";
+import Loading from "@/loading";
 
 interface FormData {
   name: string;
@@ -26,6 +28,9 @@ export default function Checkout() {
   const [validationMessages, setValidationMessages] = useState<
     Partial<Record<keyof FormData, string>>
   >({});
+  const [sentEmail, setSentEmail] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantityInCart,
     0
@@ -79,9 +84,9 @@ export default function Checkout() {
         });
 
         if (response.ok) {
-          console.log(`email sent for ${name} x ${quantity}`);
+          setSentEmail(true);
         } else {
-          console.error("Failed to send email");
+          setSentEmail(false);
         }
       }
     } catch (error) {
@@ -95,7 +100,19 @@ export default function Checkout() {
     }
   };
 
-  return (
+  if (loading) {
+    return <Loading />;
+  }
+
+  return sentEmail ? (
+    <div className="container mx-auto p-6 flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
+        <CheckCircle2 className="h-12 w-12 text-green-500" />
+        <h2 className="text-2xl font-bold text-center mt-4">Order Received</h2>
+        <p className="text-center mt-2">We&apos;ll be reaching out shortly.</p>
+      </div>
+    </div>
+  ) : (
     <div className="container mx-auto p-6">
       <div className="flex flex-wrap -mx-4">
         {/* Checkout Form */}

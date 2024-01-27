@@ -161,30 +161,34 @@ export default function Product({ params }: { params: { product: string } }) {
             <div className="mt-auto p-6">
               <div className="flex flex-col w-full sm:flex-row gap-4 mb-4">
                 <Button
-                  className={`flex items-center justify-center px-6 py-3 text-white rounded shadow-sm transition duration-150 ease-in-out w-full ${
+                  className={`w-full flex items-center justify-center px-6 py-3 text-white rounded shadow-sm transition duration-150 ease-in-out ${
                     justAdded ? "bg-green-500" : "hover:bg-yellow-400"
                   }`}
                   onClick={() => handleAddToCart(product)}
                 >
-                  {justAdded ? (
-                    <>
-                      <ThumbsUp className="h-5 w-6" />
-                      <span className="ml-2">Added!</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingBag className="h-5 w-6" />
-                      <span className="ml-2">Add To Bag</span>
-                    </>
-                  )}
+                  <div className="flex justify-center items-center">
+                    {justAdded ? (
+                      <>
+                        <ThumbsUp className="h-5 w-6" />
+                        <span className="ml-2">Added!</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag className="h-5 w-6" />
+                        <span className="ml-2">Add To Bag</span>
+                      </>
+                    )}
+                  </div>
                 </Button>
                 <Link href="/checkout">
                   <Button
-                    className="flex items-center justify-center px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white rounded shadow-sm transition duration-150 ease-in-out w-full"
+                    className="w-full flex items-center justify-center px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white rounded shadow-sm transition duration-150 ease-in-out"
                     onClick={() => handleAddToCart(product)}
                   >
-                    <span className="mr-2">Checkout Now</span>
-                    <ExternalLink className="h-5 w-6" />
+                    <div className="flex justify-center items-center">
+                      <span className="mr-2">Checkout Now</span>
+                      <ExternalLink className="h-5 w-6" />
+                    </div>
                   </Button>
                 </Link>
               </div>
