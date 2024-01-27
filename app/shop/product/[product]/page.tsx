@@ -178,7 +178,7 @@ export default function Product({ params }: { params: { product: string } }) {
                     </>
                   )}
                 </Button>
-                <Button className="flex items-center justify-center px-6 py-3 bg-sky-600 hover:bg-sky-500 text-white rounded shadow-sm transition duration-150 ease-in-out w-full">
+                <Button className="flex items-center justify-center px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white rounded shadow-sm transition duration-150 ease-in-out w-full">
                   <span className="mr-2">Checkout Now</span>
                   <ExternalLink className="h-5 w-6" />
                 </Button>

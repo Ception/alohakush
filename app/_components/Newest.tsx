@@ -61,7 +61,7 @@ export default async function Newest() {
             Our Newest Products
           </h2>
 
-          <Link href="/all" className="text-primary flex items-center gap-x-1">
+          <Link href="/shop" className="text-primary flex items-center gap-x-1">
             View All
             <span>
               <ArrowRight />

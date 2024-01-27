@@ -37,13 +37,13 @@ export default function Navbar() {
             {links.map((link, index) => (
               <div key={index}>
                 {pathName === link.href ? (
-                  <Link className="text-lg text-primary" href={link.href}>
+                  <Link href={link.href} className="text-lg text-primary">
                     {link.name}
                   </Link>
                 ) : (
                   <Link
-                    className="text-lg text-gray-600 transition duration-100 hover:text-primary"
                     href={link.href}
+                    className="text-lg text-gray-600 transition duration-100 hover:text-primary"
                   >
                     {link.name}
                   </Link>

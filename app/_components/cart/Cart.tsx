@@ -8,6 +8,7 @@ import { CartItem, useCart } from "./CartContext";
 import { Trash2, Plus, Minus, Info } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export function ShoppingCart({
   isOpen,
@@ -129,9 +130,12 @@ export function ShoppingCart({
                   >
                     Clear Cart
                   </button>
-                  <button className="bg-sky-600 text-white px-4 py-2 rounded hover:bg-sky-500">
+                  <Link
+                    href="/checkout"
+                    className="bg-sky-500 text-white px-4 py-2 rounded hover:bg-sky-600"
+                  >
                     Checkout
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
