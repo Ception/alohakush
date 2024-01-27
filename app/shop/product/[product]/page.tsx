@@ -10,7 +10,7 @@ import { Button } from "../../../_components/ui/button";
 import { API, AUTH_TOKEN } from "@/app/page";
 import Link from "next/link";
 
-interface fullProduct {
+interface FullProduct {
   id: number;
   description: string;
   price: number;
@@ -22,9 +22,14 @@ interface fullProduct {
   name: string;
   smallImageUrl: string;
   categoryName: string;
+  categorySlug: string;
 }
 
-async function getProduct(name: string): Promise<fullProduct[]> {
+interface CartItem extends FullProduct {
+  quantityInCart: number;
+}
+
+async function getProduct(name: string): Promise<FullProduct[]> {
   try {
     const response = await fetch(
       `${API}/products?filters[slug][$eq]=${name}&populate=image,categories`,
@@ -53,8 +58,8 @@ async function getProduct(name: string): Promise<fullProduct[]> {
       smallImageUrl:
         item.attributes.image?.data[0]?.attributes.formats.small.url ??
         "DefaultImageUrl",
-      categoryName:
-        item.attributes.categories?.data[0]?.attributes.name ?? "No Category",
+      categoryName: item.attributes.categories?.data[0]?.attributes.name,
+      categorySlug: item.attributes.categories?.data[0]?.attributes.slug,
     }));
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -67,7 +72,7 @@ export default async function Product({
 }: {
   params: { product: string };
 }) {
-  const data: fullProduct[] = await getProduct(params.product);
+  const data: FullProduct[] = await getProduct(params.product);
   const images = data.map(
     (product) => `https://cms.alohakush.ca${product.smallImageUrl}`
   );
@@ -83,7 +88,7 @@ export default async function Product({
                 <div className="flex justify-between items-center">
                   <span className="flex text-gray-500 text-xs uppercase tracking-widest">
                     <Link
-                      href={`/shop/${data[0].categoryName.toLowerCase()}`}
+                      href={`/shop/${data[0].categorySlug}`}
                       className="hover:underline"
                     >
                       {data[0].categoryName}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
 import Navbar from "./_components/Header";
+import { CartProvider } from "./_components/cart/CartContext";
 
 const ubuntu = Ubuntu({ subsets: ["latin"], weight: "400", style: "normal" });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
       <body className={ubuntu.className}>
         <Navbar />
         <main className="relative flex px-24 pt-24 min-h-screen w-full overflow-auto">
-          {children}
+          <CartProvider>{children}</CartProvider>
         </main>
       </body>
     </html>

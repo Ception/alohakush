@@ -92,6 +92,7 @@ export default function Category({ params }: { params: { category: string } }) {
                 <Image
                   src={`https://cms.alohakush.ca${product.smallImageUrl}`}
                   alt="Product image"
+                  priority={true}
                   width={300}
                   height={300}
                   className="w-full h-full object-cover object-center custom-object-fit lg:h-full lg:w-full"
@@ -101,7 +102,7 @@ export default function Category({ params }: { params: { category: string } }) {
                 <div>
                   <h3 className="text-sm text-gray-700">
                     <Link href={`/shop/product/${product.slug}`}>
-                      <span>{product.name}</span>
+                      <span className="hover:underline">{product.name}</span>
                     </Link>
                   </h3>
                   <p className="mt-1 text-xs text-gray-500">
