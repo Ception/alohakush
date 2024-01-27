@@ -6,8 +6,9 @@ import {
   CheckCheck,
   ExternalLink,
   ChevronRight,
+  ThumbsUp,
 } from "lucide-react";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import ImageGallery from "../../../_components/ImageGallery";
 import { Button } from "../../../_components/ui/button";
 import Link from "next/link";
@@ -25,12 +26,10 @@ interface FullProduct {
   slug: string | null;
   name: string;
   smallImageUrl: string;
+  thumbnailImageUrl: string;
   categoryName: string;
   categorySlug: string;
-}
-
-interface CartItem extends FullProduct {
-  quantityInCart: number;
+  quantityInCart?: number;
 }
 
 async function getProduct(name: string): Promise<FullProduct[]> {
@@ -55,6 +54,9 @@ async function getProduct(name: string): Promise<FullProduct[]> {
       smallImageUrl:
         item.attributes.image?.data[0]?.attributes.formats.small.url ??
         "DefaultImageUrl",
+      thumbnailImageUrl:
+        item.attributes.image?.data[0]?.attributes.formats.thumbnail.url ??
+        "DefaultImageUrl",
       categoryName: item.attributes.categories?.data[0]?.attributes.name,
       categorySlug: item.attributes.categories?.data[0]?.attributes.slug,
     }));
@@ -67,6 +69,7 @@ async function getProduct(name: string): Promise<FullProduct[]> {
 export default function Product({ params }: { params: { product: string } }) {
   const [products, setProducts] = useState<FullProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [justAdded, setJustAdded] = useState(false);
   const images = products.map(
     (product) => `https://cms.alohakush.ca${product.smallImageUrl}`
   );
@@ -74,12 +77,11 @@ export default function Product({ params }: { params: { product: string } }) {
   const { addToCart } = useCart();
 
   const handleAddToCart = (product: FullProduct) => {
-    const cartItem: CartItem = {
-      ...product,
-      quantityInCart: 1,
-    };
-
-    addToCart(cartItem);
+    addToCart(product);
+    setJustAdded(true);
+    setTimeout(() => {
+      setJustAdded(false);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -157,13 +159,24 @@ export default function Product({ params }: { params: { product: string } }) {
               </div>
             </div>
             <div className="mt-auto p-6">
-              <div className="flex flex-col sm:flex-row gap-4 mb-4">
+              <div className="flex flex-col w-full sm:flex-row gap-4 mb-4">
                 <Button
-                  className="flex items-center justify-center px-6 py-3 hover:bg-yellow-400 text-white rounded shadow-sm transition duration-150 ease-in-out w-full"
+                  className={`flex items-center justify-center px-6 py-3 text-white rounded shadow-sm transition duration-150 ease-in-out w-full ${
+                    justAdded ? "bg-green-500" : "hover:bg-yellow-400"
+                  }`}
                   onClick={() => handleAddToCart(product)}
                 >
-                  <ShoppingBag className="h-5 w-6" />
-                  <span className="ml-2">Add To Bag</span>
+                  {justAdded ? (
+                    <>
+                      <ThumbsUp className="h-5 w-6" />
+                      <span className="ml-2">Added!</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag className="h-5 w-6" />
+                      <span className="ml-2">Add To Bag</span>
+                    </>
+                  )}
                 </Button>
                 <Button className="flex items-center justify-center px-6 py-3 bg-sky-600 hover:bg-sky-500 text-white rounded shadow-sm transition duration-150 ease-in-out w-full">
                   <span className="mr-2">Checkout Now</span>

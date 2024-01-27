@@ -18,13 +18,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={ubuntu.className}>
-        <Navbar />
-        <main className="relative flex px-24 pt-24 min-h-screen w-full overflow-auto">
-          <CartProvider>{children}</CartProvider>
-        </main>
-      </body>
-    </html>
+    <CartProvider>
+      <html lang="en">
+        <body className={ubuntu.className}>
+          <Navbar />
+          <main className="relative flex px-24 pt-24 min-h-screen w-full overflow-auto">
+            {children}
+          </main>
+        </body>
+      </html>
+    </CartProvider>
   );
 }
