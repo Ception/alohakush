@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   try {
     const response = await client.sendEmailWithTemplate({
       From: "order@alohakush.ca",
-      To: "aleks@alohakush.ca",
+      To: "shon@alohakush.ca",
       TemplateAlias: "order",
       TemplateModel: {
         items: itemsList,
