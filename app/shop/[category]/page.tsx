@@ -89,14 +89,16 @@ export default function Category({ params }: { params: { category: string } }) {
           {products.map((product: Product) => (
             <div key={product.id} className="group relative">
               <div className="aspect-square w-full overflow-hidden rounded bg-gray-200 group-hover:opacity-75 lg:h-80 cursor-pointer">
-                <Image
-                  src={`https://cms.alohakush.ca${product.smallImageUrl}`}
-                  alt="Product image"
-                  priority={true}
-                  width={300}
-                  height={300}
-                  className="w-full h-full object-cover object-center custom-object-fit lg:h-full lg:w-full"
-                />
+                <Link href={`/shop/product/${product.slug}`}>
+                  <Image
+                    src={`https://cms.alohakush.ca${product.smallImageUrl}`}
+                    alt="Product image"
+                    priority={true}
+                    width={300}
+                    height={300}
+                    className="w-full h-full object-cover object-center custom-object-fit lg:h-full lg:w-full"
+                  />
+                </Link>
               </div>
               <div className="mt-4 flex justify-between">
                 <div>
