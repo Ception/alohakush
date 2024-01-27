@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   const { product, quantity, name, phone, email, city, note } =
     await req.json();
-  const apiKey = "42db4870-7870-4b27-8229-14ef90cf9cba";
+  const apiKey = process.env.POSTMARK_API_KEY!;
   const client = new ServerClient(apiKey);
 
   try {
