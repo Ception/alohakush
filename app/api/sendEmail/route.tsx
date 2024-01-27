@@ -2,10 +2,17 @@ import { ServerClient } from "postmark";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { product, quantity, name, phone, email, city, note } =
-    await req.json();
+  const { items, name, phone, email, city, note } = await req.json();
   const apiKey = process.env.POSTMARK_API_KEY!;
   const client = new ServerClient(apiKey);
+
+  // Format the items into strings
+  const itemsList = items
+    .map(
+      (item: { product: any; quantity: any }) =>
+        `${item.product}: ${item.quantity}`
+    )
+    .join("\n");
 
   try {
     const response = await client.sendEmailWithTemplate({
@@ -13,8 +20,7 @@ export async function POST(req: NextRequest) {
       To: "aleks@alohakush.ca",
       TemplateAlias: "order",
       TemplateModel: {
-        product: product,
-        quantity: quantity,
+        items: itemsList,
         name: name,
         phone: phone,
         email: email,

@@ -63,33 +63,34 @@ export default function Checkout() {
     try {
       formSchema.parse(formData);
 
-      for (let item of cartItems) {
-        const { name, quantity } = item;
+      // Prepare the items for the request
+      const items = cartItems.map((item) => ({
+        product: item.name,
+        quantity: item.quantityInCart,
+      }));
 
-        const response = await fetch("/api/sendEmail", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            product: name,
-            quantity: quantity,
-            name: formData.name,
-            phone: formData.phone,
-            email: formData.email,
-            city: formData.city,
-            note: formData.note,
-          }),
-        });
+      const response = await fetch("/api/sendEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items,
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          city: formData.city,
+          note: formData.note,
+        }),
+      });
 
-        if (response.ok) {
-          setSentEmail(true);
-          clearCart();
-        } else {
-          setSentEmail(false);
-        }
-        setLoading(false);
+      if (response.ok) {
+        setSentEmail(true);
+        clearCart();
+      } else {
+        setSentEmail(false);
       }
+      setLoading(false);
     } catch (error) {
       if (error instanceof z.ZodError) {
         let validationErrors: Record<string, string> = {};
