@@ -70,6 +70,7 @@ export default function Product({ params }: { params: { product: string } }) {
   const images = products.map(
     (product) => `https://cms.alohakush.ca${product.smallImageUrl}`
   );
+  const sale = products.map((product) => product.sale);
   const { addToCart } = useCart();
 
   const handleAddToCart = (product: FullProduct) => {
@@ -101,90 +102,84 @@ export default function Product({ params }: { params: { product: string } }) {
 
   return (
     <div className="mx-auto max-w-7xl pt-24 px-4 sm:px-6 lg:px-8">
-      <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
+      <div className="grid gap-8 grid-cols-1 md:grid-cols-2 items-start">
+        <ImageGallery images={images} sale={sale[0]} />
         {products.map((product: FullProduct) => (
-          <div key={product.id}>
-            <ImageGallery images={images} sale={product.sale} />
-            <div className="max-w-2xl mx-auto bg-`white shadow-lg rounded-lg overflow-hidden">
-              {products.length > 0 && (
-                <div className="flex flex-col justify-between p-6 h-full">
-                  <div>
-                    <div className="flex justify-between items-center">
-                      <span className="flex text-gray-500 text-xs uppercase tracking-widest">
-                        <Link
-                          href={`/shop/${product.categorySlug}`}
-                          className="hover:underline"
-                        >
-                          {product.categoryName}
-                        </Link>
-                        <ChevronRight className="h-2 w-2 m-auto" />
-                        {product.flower}
-                      </span>
-                      <p className="text-sm text-gray-700">
-                        Stock:{" "}
-                        <span className="underline text-orange-500 hover:text-yellow-400 cursor-pointer">
-                          {product.quantity}
-                        </span>
-                      </p>
-                    </div>
-                    <h2 className="text-4xl font-bold text-gray-800 my-2">
-                      {product.name}
-                    </h2>
-
-                    <div className="flex justify-center items-center p-4">
-                      {product.sale ? (
-                        <>
-                          <span className="text-4xl font-bold text-gray-800">
-                            $<span className="underline">{product.price}</span>
-                          </span>
-                          <span className="text-lg text-red-500 line-through ml-2">
-                            ${product.originalPrice}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="text-4xl font-bold text-gray-800">
-                          $<span className="underline">{product.price}</span>
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="p-4">
-                      <h4 className="text-xs text-gray-700 mb-0.5 underline">
-                        Description:
-                      </h4>
-                      <p className="text-sm text-gray-500 mb-4">
-                        {product.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                      <Button
-                        className="flex items-center justify-center px-6 py-3 hover:bg-yellow-400 text-white rounded shadow-sm transition duration-150 ease-in-out w-full"
-                        onClick={() => handleAddToCart(product)}
-                      >
-                        <ShoppingBag className="h-5 w-6" />
-                        <span className="ml-2">Add To Bag</span>
-                      </Button>
-                      <Button className="flex items-center justify-center px-6 py-3 bg-sky-600 hover:bg-sky-500 text-white rounded shadow-sm transition duration-150 ease-in-out w-full">
-                        <span className="mr-2">Checkout Now</span>
-                        <ExternalLink className="h-5 w-6" />
-                      </Button>
-                    </div>
-                    <div className="flex justify-center gap-4 text-sm text-gray-500 my-4">
-                      <div className="flex items-center gap-1">
-                        <CheckCheck className="h-5 w-5 text-gray-500" />
-                        <span>Incl. Taxes & fees</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Truck className="h-5 w-5 text-gray-500" />
-                        <span>Same day delivery</span>
-                      </div>
-                    </div>
-                  </div>
+          <div
+            key={product.id}
+            className="flex flex-col bg-white shadow-lg rounded-lg overflow-hidden min-h-[500px]"
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-2">
+                <span className="flex text-gray-500 text-xs uppercase tracking-widest">
+                  <Link
+                    href={`/shop/${product.categorySlug}`}
+                    className="hover:underline"
+                  >
+                    {product.categoryName}
+                  </Link>
+                  <ChevronRight className="h-2 w-2 m-auto" />
+                  {product.flower}
+                </span>
+                <p className="text-sm text-gray-700">
+                  Stock:{" "}
+                  <span className="underline text-orange-500 hover:text-yellow-400">
+                    {product.quantity}
+                  </span>
+                </p>
+              </div>
+              <h2 className="text-4xl font-bold text-gray-800 mb-2">
+                {product.name}
+              </h2>
+              <div className="flex justify-center items-center mb-2 p-12">
+                {product.sale ? (
+                  <>
+                    <span className="text-4xl font-bold text-gray-800">
+                      $<span className="underline">{product.price}</span>
+                    </span>
+                    <span className="text-lg text-red-500 line-through ml-2">
+                      ${product.originalPrice}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-4xl font-bold text-gray-800">
+                    $<span className="underline">{product.price}</span>
+                  </span>
+                )}
+              </div>
+              <div className="flex justify-center items-center pt-18">
+                <div>
+                  <h4 className="text-xs text-gray-700 underline mb-1">
+                    Description:
+                  </h4>
+                  <p className="text-sm text-gray-500">{product.description}</p>
                 </div>
-              )}
+              </div>
+            </div>
+            <div className="mt-auto p-6">
+              <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                <Button
+                  className="flex items-center justify-center px-6 py-3 hover:bg-yellow-400 text-white rounded shadow-sm transition duration-150 ease-in-out w-full"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  <ShoppingBag className="h-5 w-6" />
+                  <span className="ml-2">Add To Bag</span>
+                </Button>
+                <Button className="flex items-center justify-center px-6 py-3 bg-sky-600 hover:bg-sky-500 text-white rounded shadow-sm transition duration-150 ease-in-out w-full">
+                  <span className="mr-2">Checkout Now</span>
+                  <ExternalLink className="h-5 w-6" />
+                </Button>
+              </div>
+              <div className="flex justify-center gap-4 text-sm text-gray-500">
+                <div className="flex items-center gap-1">
+                  <CheckCheck className="h-5 w-5 text-gray-500" />
+                  <span>Incl. Taxes & fees</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Truck className="h-5 w-5 text-gray-500" />
+                  <span>Same day delivery</span>
+                </div>
+              </div>
             </div>
           </div>
         ))}

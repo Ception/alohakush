@@ -50,7 +50,7 @@ export default function ImageGallery({
   }
 
   return (
-    <div className="grid gap-4 grid-cols-5">
+    <div className="grid gap-4 grid-cols-5 w-full h-full">
       <div className="flex flex-col gap-2 col-span-1">{thumbnailElements}</div>
       <div className="relative overflow-hidden rounded bg-gray-100 col-span-4">
         {/* Fixed-size container for the main image */}
