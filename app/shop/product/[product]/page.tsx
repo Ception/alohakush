@@ -152,7 +152,7 @@ export default function Product({ params }: { params: { product: string } }) {
               <div className="flex justify-center items-center pt-18">
                 <div>
                   <h4 className="text-xs text-gray-700 underline mb-1">
-                    Description:
+                    Overview:
                   </h4>
                   <p className="text-sm text-gray-500">{product.description}</p>
                 </div>

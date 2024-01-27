@@ -53,18 +53,19 @@ async function getProductsByCategorySlug(
 
 export default function Category({ params }: { params: { category: string } }) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setIsLoading(true);
     async function fetchProducts() {
       try {
         const fetchedProducts = await getProductsByCategorySlug(
           params.category
         );
         setProducts(fetchedProducts);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
-      } finally {
         setIsLoading(false);
       }
     }
@@ -85,37 +86,41 @@ export default function Category({ params }: { params: { category: string } }) {
           </h2>
         </div>
 
-        <div className="mt-6 grid grid-cols-4 gap-x-6 gap-y-10">
-          {products.map((product: Product) => (
-            <div key={product.id} className="group relative">
-              <div className="aspect-square w-full overflow-hidden rounded bg-gray-200 group-hover:opacity-75 lg:h-80 cursor-pointer">
-                <Link href={`/shop/product/${product.slug}`}>
-                  <Image
-                    src={`https://cms.alohakush.ca${product.smallImageUrl}`}
-                    alt="Product image"
-                    priority={true}
-                    width={300}
-                    height={300}
-                    className="w-full h-full object-cover object-center custom-object-fit lg:h-full lg:w-full"
-                  />
-                </Link>
-              </div>
-              <div className="mt-4 flex justify-between">
-                <div>
-                  <h3 className="text-sm text-gray-700">
-                    <Link href={`/shop/product/${product.slug}`}>
-                      <span className="hover:underline">{product.name}</span>
-                    </Link>
-                  </h3>
-                  <p className="mt-1 text-xs text-gray-500">
-                    {product.categoryName}
-                  </p>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div className="mt-6 grid grid-cols-4 gap-x-6 gap-y-10">
+            {products.map((product: Product) => (
+              <div key={product.id} className="group relative">
+                <div className="aspect-square w-full overflow-hidden rounded bg-gray-200 group-hover:opacity-75 lg:h-80 cursor-pointer">
+                  <Link href={`/shop/product/${product.slug}`}>
+                    <Image
+                      src={`https://cms.alohakush.ca${product.smallImageUrl}`}
+                      alt="Product image"
+                      width={300}
+                      height={300}
+                      loading="lazy"
+                      className="w-full h-full object-cover object-center custom-object-fit lg:h-full lg:w-full"
+                    />
+                  </Link>
                 </div>
-                <p className="text-sm text-gray-900">${product.price}</p>
+                <div className="mt-4 flex justify-between">
+                  <div>
+                    <h3 className="text-sm text-gray-700">
+                      <Link href={`/shop/product/${product.slug}`}>
+                        <span className="hover:underline">{product.name}</span>
+                      </Link>
+                    </h3>
+                    <p className="mt-1 text-xs text-gray-500">
+                      {product.categoryName}
+                    </p>
+                  </div>
+                  <p className="text-sm text-gray-900">${product.price}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

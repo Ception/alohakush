@@ -19,12 +19,10 @@ interface FullProduct {
   quantityInCart?: number;
 }
 
-// Define the shape of your cart items based on your product structure
 export interface CartItem extends FullProduct {
   quantityInCart: number;
 }
 
-// Define the context using that type
 export const CartContext = createContext({
   cartItems: [] as CartItem[],
   addToCart: (item: FullProduct) => {},

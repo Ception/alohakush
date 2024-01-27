@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCart } from "../_components/cart/CartContext";
 import Image from "next/image";
 import { CartItem } from "../_components/cart/CartContext";
 import { z } from "zod";
 import { CheckCircle2 } from "lucide-react";
-import Loading from "@/loading";
 
 interface FormData {
   name: string;
@@ -17,7 +16,7 @@ interface FormData {
 }
 
 export default function Checkout() {
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     phone: "",
@@ -60,7 +59,6 @@ export default function Checkout() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
       formSchema.parse(formData);
@@ -86,6 +84,7 @@ export default function Checkout() {
 
         if (response.ok) {
           setSentEmail(true);
+          clearCart();
         } else {
           setSentEmail(false);
         }

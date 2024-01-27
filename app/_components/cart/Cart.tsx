@@ -45,9 +45,21 @@ export function ShoppingCart({
     0
   );
 
+  const handleOpenAutoFocus = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+  };
+
+  const handleCloseAutoFocus = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+  };
+
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetContent className="sm:max-w-lg w-[90vw] bg-slate-200 p-4">
+      <SheetContent
+        className="sm:max-w-lg w-[90vw] bg-slate-200 p-4"
+        onOpenAutoFocus={handleOpenAutoFocus}
+        onCloseAutoFocus={handleCloseAutoFocus}
+      >
         <SheetHeader>
           <SheetTitle className="text-gray-700 mb-8">
             Your Shopping Bag

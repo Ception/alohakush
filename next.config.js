@@ -3,9 +3,6 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "images.unsplash.com",
-      },
-      {
         hostname: "tailwindui.com",
       },
       {
