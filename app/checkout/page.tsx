@@ -6,29 +6,44 @@ import Image from "next/image";
 import { CartItem } from "../_components/cart/CartContext";
 import { z } from "zod";
 
+interface FormData {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  note: string;
+}
+
 export default function Checkout() {
   const { cartItems } = useCart();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     phone: "",
     email: "",
     city: "",
+    note: "",
   });
-  const [note, setNote] = useState("");
-  const [validationMessages, setValidationMessages] = useState({});
+  const [validationMessages, setValidationMessages] = useState<
+    Partial<Record<keyof FormData, string>>
+  >({});
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantityInCart,
     0
   );
 
+  const phoneRegex = new RegExp(
+    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
+  );
+
   const formSchema = z.object({
     name: z.string().nonempty({ message: "Name is required." }),
-    phone: z.string().nonempty({ message: "Phone number is required." }),
+    phone: z.string().regex(phoneRegex, { message: "Invalid phone number.   " }),
     email: z
       .string()
       .email({ message: "Invalid email address." })
       .nonempty({ message: "Email address is required." }),
     city: z.string().nonempty({ message: "City is required." }),
+    note: z.string().optional(),
   });
 
   const handleInputChange = (e: { target: { id: any; value: any } }) => {
@@ -61,6 +76,7 @@ export default function Checkout() {
           <div className="bg-white p-6 rounded shadow-sm">
             <h2 className="text-2xl font-bold mb-5">Billing Details</h2>
             <form onSubmit={handleSubmit}>
+              {/* Name Input */}
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
@@ -72,9 +88,18 @@ export default function Checkout() {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="name"
                   type="text"
-                  placeholder="Full Name"
+                  placeholder="Your Name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                 />
+                {validationMessages.name && (
+                  <p className="text-red-500 text-xs italic">
+                    {validationMessages.name}
+                  </p>
+                )}
               </div>
+
+              {/* Phone Number Input */}
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
@@ -87,8 +112,17 @@ export default function Checkout() {
                   id="phone"
                   type="tel"
                   placeholder="Phone Number"
+                  value={formData.phone}
+                  onChange={handleInputChange}
                 />
+                {validationMessages.phone && (
+                  <p className="text-red-500 text-xs italic">
+                    {validationMessages.phone}
+                  </p>
+                )}
               </div>
+
+              {/* Email Address Input */}
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
@@ -101,8 +135,17 @@ export default function Checkout() {
                   id="email"
                   type="email"
                   placeholder="Email Address"
+                  value={formData.email}
+                  onChange={handleInputChange}
                 />
+                {validationMessages.email && (
+                  <p className="text-red-500 text-xs italic">
+                    {validationMessages.email}
+                  </p>
+                )}
               </div>
+
+              {/* City Input */}
               <div className="mb-4">
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
@@ -115,27 +158,44 @@ export default function Checkout() {
                   id="city"
                   type="text"
                   placeholder="City"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                />
+                {validationMessages.city && (
+                  <p className="text-red-500 text-xs italic">
+                    {validationMessages.city}
+                  </p>
+                )}
+              </div>
+
+              {/* Note Section */}
+              <div className="mb-6">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="note"
+                >
+                  Note (Optional)
+                </label>
+                <textarea
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="note"
+                  placeholder="Any special instructions or message?"
+                  rows={4}
+                  value={formData.note}
+                  onChange={handleInputChange}
                 />
               </div>
-            </form>
 
-            {/* Note Section */}
-            <div className="mb-6">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="note"
-              >
-                Note (Optional)
-              </label>
-              <textarea
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="note"
-                placeholder="Any special instructions or message?"
-                rows={4}
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-              />
-            </div>
+              {/* Place Order Button */}
+              <div className="mt-6">
+                <button
+                  type="submit"
+                  className="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded"
+                >
+                  Place Order
+                </button>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -168,11 +228,6 @@ export default function Checkout() {
               <p className="text-lg font-bold">
                 Total: ${totalPrice.toFixed(2)}
               </p>
-            </div>
-            <div className="mt-6">
-              <button className="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded">
-                Place Order
-              </button>
             </div>
           </div>
         </div>

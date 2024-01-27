@@ -29,6 +29,7 @@
     "eslint-config-next": "14.0.4",
     "lucide-react": "^0.316.0",
     "postcss": "^8",
+    "postmark": "^4.0.2",
     "react": "^18.2.0",
     "react-spinners": "^0.13.8",
     "tailwind-merge": "^2.2.1",
