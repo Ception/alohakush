@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "../_components/cart/CartContext";
 import Image from "next/image";
 import { CartItem } from "../_components/cart/CartContext";
@@ -29,7 +29,7 @@ export default function Checkout() {
     Partial<Record<keyof FormData, string>>
   >({});
   const [sentEmail, setSentEmail] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantityInCart,
@@ -60,6 +60,7 @@ export default function Checkout() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       formSchema.parse(formData);
@@ -88,6 +89,7 @@ export default function Checkout() {
         } else {
           setSentEmail(false);
         }
+        setLoading(false);
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -99,10 +101,6 @@ export default function Checkout() {
       }
     }
   };
-
-  if (loading) {
-    return <Loading />;
-  }
 
   return sentEmail ? (
     <div className="container mx-auto p-6 flex items-center justify-center">
@@ -234,9 +232,14 @@ export default function Checkout() {
               <div className="mt-6">
                 <button
                   type="submit"
-                  className="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded"
+                  className={`w-full font-bold py-3 px-4 rounded ${
+                    loading
+                      ? "bg-gray-500 cursor-not-allowed"
+                      : "bg-sky-500 hover:bg-sky-600"
+                  } text-white`}
+                  disabled={loading}
                 >
-                  Place Order
+                  {loading ? "Submitting Order..." : "Place Order"}
                 </button>
               </div>
             </form>
