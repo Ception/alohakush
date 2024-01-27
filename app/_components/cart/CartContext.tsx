@@ -35,7 +35,6 @@ export const CartProvider = ({ children }: any) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const addToCart = (newItem: fullProduct) => {
-    console.log(`Item added to cart: ${newItem.name}`);
     setCartItems((prevItems) => {
       // Check if the item is already in the cart
       const itemIndex = prevItems.findIndex((item) => item.id === newItem.id);
