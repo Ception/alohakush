@@ -21,7 +21,11 @@ export default function Navbar() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
-    fetch("/api/categories")
+    fetch("/api/categories", {
+      headers: {
+        cache: "no-cache",
+      },
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);

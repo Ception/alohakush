@@ -11,6 +11,7 @@ export async function GET(req: NextRequest, { params }: any) {
       {
         headers: {
           Authorization: `Bearer ${AUTH_TOKEN}`,
+          cache: "no-cache",
         },
       }
     );
@@ -25,6 +26,7 @@ export async function GET(req: NextRequest, { params }: any) {
       status: 200,
       headers: {
         "Content-Type": "application/json",
+        cahe: "no-cache",
       },
     });
   } catch (error) {

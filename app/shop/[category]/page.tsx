@@ -28,7 +28,11 @@ async function getProductsByCategorySlug(
   categorySlug: string
 ): Promise<Product[]> {
   try {
-    const response = await fetch(`/api/products/${categorySlug}`);
+    const response = await fetch(`/api/products/${categorySlug}`, {
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status}`);

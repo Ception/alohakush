@@ -18,7 +18,8 @@ export async function GET(req: NextRequest, { params }: any) {
     return new Response(JSON.stringify(jsonResponse), {
       status: 200,
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${AUTH_TOKEN}`,
+        cache: "no-cache",
       },
     });
   } catch (error) {

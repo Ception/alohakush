@@ -32,7 +32,11 @@ export default function Shop() {
       image8,
     ];
 
-    fetch("/api/categories")
+    fetch("/api/categories", {
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);

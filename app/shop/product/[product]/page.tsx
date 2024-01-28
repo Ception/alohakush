@@ -34,7 +34,11 @@ interface FullProduct {
 
 async function getProduct(name: string): Promise<FullProduct[]> {
   try {
-    const response = await fetch(`/api/${name}`);
+    const response = await fetch(`/api/${name}`, {
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`Error: ${response.status}`);
