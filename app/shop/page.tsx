@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import axios from "axios";
 import image1 from "../../public/image1.jpg";
 import image2 from "../../public/image2.jpg";
 import image3 from "../../public/image3.jpg";
@@ -33,10 +32,15 @@ export default function Shop() {
       image8,
     ];
 
-    axios
-      .get("https://cms.alohakush.ca/api/categories")
+    fetch("/api/categories")
       .then((response) => {
-        const fetchedCategories = response.data.data.map(
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((jsonResponse) => {
+        const fetchedCategories = jsonResponse.data.map(
           (cat: { attributes: { name: any } }, index: number) => ({
             name: cat.attributes.name,
             imageUrl: images[index % images.length],

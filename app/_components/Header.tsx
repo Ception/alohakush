@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import { ShoppingBag } from "lucide-react";
 import { ShoppingCart } from "./cart/Cart";
-import axios from "axios";
 
 const links = [
   { name: "Home", href: "/" },
@@ -22,10 +21,15 @@ export default function Navbar() {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("https://cms.alohakush.ca/api/categories")
+    fetch("/api/categories")
       .then((response) => {
-        const fetchedCategories = response.data.data.map(
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((jsonResponse) => {
+        const fetchedCategories = jsonResponse.data.map(
           (cat: { attributes: { name: any } }) => cat.attributes.name
         );
         setCategories(fetchedCategories);
