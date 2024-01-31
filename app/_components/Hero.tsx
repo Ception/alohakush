@@ -5,11 +5,38 @@ import image6 from "../../public/image6.jpg";
 
 export default function Hero() {
   return (
-    <section className="mx-auto w-full h-full p-12 flex justify-center items-center">
-      <div className="flex flex-wrap justify-between">
+    <section className="mx-auto w-full h-full sm:p-12 flex flex-col sm:flex-row justify-center items-center">
+      {/* Mobile View with Overlay */}
+      <div className="sm:hidden w-screen h-[calc(100vh-3.5rem)] relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src={image6}
+            alt="Background"
+            layout="fill"
+            objectFit="cover"
+            className="w-full h-full"
+          />
+        </div>
+        <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center p-4">
+          <h1 className="text-2xl text-white font-bold px-4 w-11/12 md:w-10/12 lg:w-8/12 xl:w-7/12 2xl:w-6/12 mx-auto">
+            High quality Cannabis, at your fingertips!
+          </h1>
+          <div className="pt-8 w-11/12 md:w-10/12 lg:w-8/12 xl:w-7/12 2xl:w-6/12 mx-auto">
+            <Link
+              href="/shop"
+              className="w-full text-lg bg-primary text-white py-4 px-4 rounded hover:bg-sky-500 transition text-center"
+            >
+              SHOP OUR CATALOG
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden sm:flex w-full justify-center items-center">
         {/* left column */}
-        <div className="flex w-1/4 flex-col justify-center px-4 space-y-4 py-4">
-          <h1 className="text-2xl font-bold text-black sm:text-5xl md:text-6xl leading-tight">
+        <div className="flex w-full sm:w-1/4 flex-col justify-center space-y-4 py-4">
+          <h1 className="text-xl sm:text-2xl font-bold text-black sm:text-5xl md:text-6xl leading-tight">
             High quality Cannabis, at your fingertips!
           </h1>
           <div className="pt-8 w-full">
@@ -23,8 +50,8 @@ export default function Hero() {
         </div>
 
         {/* right column */}
-        <div className="flex w-3/4 lg:w-2/3">
-          <div className="relative left-12 top-12 z-10 -ml-12 overflow-hidden rounded-xl bg-gray-100 shadow-lg">
+        <div className="flex w-full sm:w-3/4 lg:w-2/3">
+          <div className="relative left-16 top-12 z-10 overflow-hidden rounded-xl bg-gray-100 shadow-lg">
             <Image
               src={image3}
               alt="Joint held up"

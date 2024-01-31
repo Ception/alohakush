@@ -51,7 +51,7 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 bg-white border-b">
-        <div className="flex items-center justify-between mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl">
+        <div className="flex items-center justify-between mx-auto px-4 h-14 sm:h-24 lg:max-w-7xl lg:px-6">
           <Link href="/">
             <h1 className="md:text-4xl text-2xl text-black">
               ALOHA
@@ -81,7 +81,7 @@ export default function Navbar() {
                               .toLowerCase()
                               .replace(/\s+/g, "-")}`}
                           >
-                            <span className="block px-4 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white">
+                            <span className="block px-4 py-2 text-gray-800 hover:bg-sky-400 hover:text-white">
                               {category}
                             </span>
                           </Link>
