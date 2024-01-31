@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import image2 from "../../public/image2.jpg";
 import image3 from "../../public/image3.jpg";
 import image6 from "../../public/image6.jpg";
 
@@ -8,9 +9,9 @@ export default function Hero() {
     <section className="mx-auto w-full h-full sm:p-12 flex flex-col sm:flex-row justify-center items-center">
       {/* Mobile View with Overlay */}
       <div className="sm:hidden w-screen h-[calc(100vh-3.5rem)] relative overflow-hidden">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 opacity-100">
           <Image
-            src={image6}
+            src={image2}
             alt="Background"
             layout="fill"
             objectFit="cover"
@@ -18,10 +19,10 @@ export default function Hero() {
           />
         </div>
         <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center p-4">
-          <h1 className="text-2xl text-white font-bold px-4 w-11/12 md:w-10/12 lg:w-8/12 xl:w-7/12 2xl:w-6/12 mx-auto">
+          <h1 className="text-6xl text-white font-bold px-4 w-4/5 mx-auto text-center">
             High quality Cannabis, at your fingertips!
           </h1>
-          <div className="pt-8 w-11/12 md:w-10/12 lg:w-8/12 xl:w-7/12 2xl:w-6/12 mx-auto">
+          <div className="pt-8 w-2/3 mx-auto flex justify-center">
             <Link
               href="/shop"
               className="w-full text-lg bg-primary text-white py-4 px-4 rounded hover:bg-sky-500 transition text-center"

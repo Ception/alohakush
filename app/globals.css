@@ -68,3 +68,15 @@ body {
 .custom-object-fit {
   object-fit: cover;
 }
+
+.scroll-indicator::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scroll-indicator::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.scroll-indicator::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}

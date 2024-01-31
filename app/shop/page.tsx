@@ -34,8 +34,8 @@ export default function Shop() {
 
     fetch("/api/categories", {
       headers: {
-        'Cache-Control': 'no-cache'
-      }
+        "Cache-Control": "no-cache",
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -58,30 +58,45 @@ export default function Shop() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center w-full h-full p-4">
-      <div className="grid grid-rows-2 grid-cols-4 gap-4">
-        {categories.slice(0, 8).map((category, index) => (
-          <div
-            key={index}
-            className="category-card max-w-xxs rounded overflow-hidden shadow-lg transform transition duration-500 ease-in-out hover:scale-105"
-          >
-            <Link
-              href={`/shop/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
+    <div className="flex justify-center items-center h-[calc(100vh-6.0rem)] overflow-hidden">
+      <div className="w-full overflow-x-auto">
+        {/* Left gradient shadow */}
+        <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-white to-transparent z-10"></div>
+
+        <div className="inline-flex justify-center gap-4 p-4">
+          {categories.slice(0, 8).map((category, index) => (
+            <div
+              key={index}
+              className="category-card flex-shrink-0 flex flex-col items-center max-w-xs md:max-w-xxs rounded overflow-hidden shadow-lg transform transition duration-500 ease-in-out hover:scale-105"
+              style={{ minWidth: "25%" }}
             >
-              <Image
-                className="w-full"
-                src={category.imageUrl}
-                alt={category.name}
-                loading="lazy"
-                width={150}
-                height={150}
-              />
-            </Link>
-            <div className="px-2 py-1">
-              <div className="font-bold text-xxs mb-1">{category.name}</div>{" "}
+              <Link
+                href={`/shop/${category.name
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}`}
+              >
+                <span>
+                  <Image
+                    src={category.imageUrl}
+                    alt={category.name}
+                    layout="responsive"
+                    width={150}
+                    height={150}
+                    className="w-full object-cover"
+                  />
+                </span>
+              </Link>
+              <div className="px-2 py-1">
+                <div className="font-bold text-xs sm:text-sm mb-1 text-center">
+                  {category.name}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Right gradient shadow */}
+        <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10"></div>
       </div>
     </div>
   );
