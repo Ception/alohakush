@@ -52,7 +52,6 @@ export default function ImageGallery({
   return (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-5 w-full h-full">
       <div className="relative overflow-hidden rounded bg-gray-100 sm:col-span-4">
-        {/* Fixed-size container for the main image */}
         <div className="w-full h-64 sm:h-96 relative">
           {sale && (
             <span className="absolute left-0 top-0 rounded-br-xl bg-red-500 px-3 py-1.5 text-2xl uppercase tracking-wider text-white z-10">
