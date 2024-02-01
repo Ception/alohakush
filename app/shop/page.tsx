@@ -86,10 +86,8 @@ export default function Shop() {
                   <Image
                     src={category.imageUrl}
                     alt={category.name}
-                    layout="responsive"
-                    width={150}
-                    height={150}
-                    onLoadingComplete={() => handleImageLoad(index)}
+                    className="w-full h-full object-cover md:w-150 md:h-150"
+                    onLoad={() => handleImageLoad(index)}
                     priority={index < 8} // Prioritize first 8 images
                   />
                 </span>

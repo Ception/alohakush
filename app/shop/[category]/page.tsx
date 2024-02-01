@@ -139,8 +139,9 @@ export default function Category({ params }: { params: { category: string } }) {
                         <Image
                           src={`https://cms.alohakush.ca${product.smallImageUrl}`}
                           alt={product.name}
-                          layout="fill"
-                          objectFit="cover"
+                          width={200}
+                          height={200}
+                          className="w-full h-full object-cover md:w-150 md:h-150"
                           priority={true}
                         />
                       </span>

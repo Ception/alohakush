@@ -62,11 +62,10 @@ export default function ImageGallery({
             <div className="w-full h-full">
               <Image
                 src={mainImage}
+                alt="Main product image"
                 width={200}
                 height={200}
-                alt="Main product image"
-                className="object-cover w-full h-full"
-                layout="responsive"
+                className="object-cover w-full h-full md:w-200 md:h-200"
                 priority={true}
               />
             </div>
