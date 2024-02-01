@@ -50,35 +50,32 @@ export default function ImageGallery({
   }
 
   return (
-    <div className="grid gap-4 grid-cols-5 w-full h-full">
-      <div className="flex flex-col gap-2 col-span-1">{thumbnailElements}</div>
-      <div className="relative overflow-hidden rounded bg-gray-100 col-span-4">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-5 w-full h-full">
+      <div className="relative overflow-hidden rounded bg-gray-100 sm:col-span-4">
         {/* Fixed-size container for the main image */}
-        <div className="w-full h-full relative">
+        <div className="w-full h-64 sm:h-96 relative">
           {sale && (
             <span className="absolute left-0 top-0 rounded-br-xl bg-red-500 px-3 py-1.5 text-2xl uppercase tracking-wider text-white z-10">
               SALE
             </span>
           )}
           {mainImage && (
-            <Image
-              src={mainImage}
-              alt="Main product image"
-              className="object-center"
-              width={400}
-              height={400}
-              priority={true}
-              style={{
-                objectFit: "cover",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-              }}
-            />
+            <div className="w-full h-full">
+              <Image
+                src={mainImage}
+                width={200}
+                height={200}
+                alt="Main product image"
+                className="object-cover w-full h-full"
+                layout="responsive"
+                priority={true}
+              />
+            </div>
           )}
         </div>
+      </div>
+      <div className="flex flex-col gap-2 sm:col-span-1">
+        {thumbnailElements}
       </div>
     </div>
   );

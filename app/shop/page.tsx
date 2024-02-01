@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useState, useCallback } from "react";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import Loading from "@/loading";
 import image1 from "../../public/image1.jpg";
 import image2 from "../../public/image2.jpg";
 import image3 from "../../public/image3.jpg";
@@ -12,31 +13,30 @@ import image6 from "../../public/image6.jpg";
 import image7 from "../../public/image7.jpg";
 import image8 from "../../public/image8.jpg";
 
+const images = [image1, image2, image3, image4, image5, image6, image7, image8];
+
 interface Category {
   name: string;
-  imageUrl: string;
+  imageUrl: StaticImageData;
 }
 
 export default function Shop() {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadedImages, setLoadedImages] = useState<boolean[]>(
+    new Array(images.length).fill(false)
+  );
+
+  const handleImageLoad = useCallback((index: number) => {
+    setLoadedImages((prevLoadedImages) => {
+      const newLoadedImages = [...prevLoadedImages];
+      newLoadedImages[index] = true;
+      return newLoadedImages;
+    });
+  }, []);
 
   useEffect(() => {
-    const images = [
-      image1,
-      image2,
-      image3,
-      image4,
-      image5,
-      image6,
-      image7,
-      image8,
-    ];
-
-    fetch("/api/categories", {
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    })
+    fetch("/api/categories")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -45,24 +45,33 @@ export default function Shop() {
       })
       .then((jsonResponse) => {
         const fetchedCategories = jsonResponse.data.map(
-          (cat: { attributes: { name: any } }, index: number) => ({
+          (cat: any, index: number) => ({
             name: cat.attributes.name,
             imageUrl: images[index % images.length],
           })
         );
         setCategories(fetchedCategories);
+        setLoadedImages(new Array(fetchedCategories.length).fill(true)); // Set images as loaded
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
       });
   }, []);
 
+  useEffect(() => {
+    if (categories.length > 0 && loadedImages.every(Boolean)) {
+      setIsLoading(false);
+    }
+  }, [categories, loadedImages]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex justify-center items-center h-[calc(100vh-6.0rem)] overflow-hidden">
       <div className="w-full overflow-x-auto">
-        {/* Left gradient shadow */}
         <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-white to-transparent z-10"></div>
-
         <div className="inline-flex justify-center gap-4 p-4">
           {categories.slice(0, 8).map((category, index) => (
             <div
@@ -82,7 +91,8 @@ export default function Shop() {
                     layout="responsive"
                     width={150}
                     height={150}
-                    className="w-full object-cover"
+                    onLoadingComplete={() => handleImageLoad(index)}
+                    priority={index < 8} // Prioritize first 8 images
                   />
                 </span>
               </Link>
@@ -94,8 +104,6 @@ export default function Shop() {
             </div>
           ))}
         </div>
-
-        {/* Right gradient shadow */}
         <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10"></div>
       </div>
     </div>

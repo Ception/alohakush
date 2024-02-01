@@ -15,7 +15,7 @@ import Link from "next/link";
 import Loading from "@/loading";
 import { useCart } from "@/app/_components/cart/CartContext";
 
-interface FullProduct {
+export interface FullProduct {
   id: number;
   description: string;
   price: number;
@@ -73,12 +73,13 @@ async function getProduct(name: string): Promise<FullProduct[]> {
 export default function Product({ params }: { params: { product: string } }) {
   const [products, setProducts] = useState<FullProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [justAdded, setJustAdded] = useState(false);
+  const [justAdded, setJustAdded] = useState<number | null>(null);
   const images = products.map(
     (product) => `https://cms.alohakush.ca${product.smallImageUrl}`
   );
   const sale = products.map((product) => product.sale);
-  const { addToCart } = useCart();
+  const [outOfStock, setOutOfStock] = useState<number | null>(null);
+  const { addToCart, cartItems } = useCart();
 
   const handleBack = () => {
     if (typeof window !== "undefined") {
@@ -87,11 +88,16 @@ export default function Product({ params }: { params: { product: string } }) {
   };
 
   const handleAddToCart = (product: FullProduct) => {
-    addToCart(product);
-    setJustAdded(true);
-    setTimeout(() => {
-      setJustAdded(false);
-    }, 3000);
+    const itemsInCart = cartItems.filter((item) => item.id === product.id);
+    if (itemsInCart.length >= product.quantity) {
+      setOutOfStock(product.id);
+    } else {
+      addToCart(product);
+      setJustAdded(product.id);
+      setTimeout(() => {
+        setJustAdded(null);
+      }, 3000);
+    }
   };
 
   useEffect(() => {
@@ -113,10 +119,10 @@ export default function Product({ params }: { params: { product: string } }) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl p-8 px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl p-4 sm:p-24 sm:mt-12 lg:p-8">
       <button
         type="button"
-        className="w-full flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700 mb-2"
+        className="w-full sm:w-auto flex items-center justify-center px-5 py-3 text-base sm:text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 mb-4"
         onClick={handleBack}
       >
         <svg
@@ -135,16 +141,16 @@ export default function Product({ params }: { params: { product: string } }) {
         </svg>
         <span>Go back</span>
       </button>
-      <div className="grid gap-8 grid-cols-1 md:grid-cols-2 items-start">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 items-start">
         <ImageGallery images={images} sale={sale[0]} />
         {products.map((product: FullProduct) => (
           <div
             key={product.id}
-            className="flex flex-col bg-white shadow-lg rounded-lg overflow-hidden min-h-[500px]"
+            className="flex flex-col bg-white shadow-md rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-lg items-center justify-center w-full h-full"
           >
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <div className="flex justify-between items-center mb-2">
-                <span className="flex text-gray-500 text-xs uppercase tracking-widest">
+                <span className="flex text-gray-500 text-xs sm:text-xm uppercase tracking-widest">
                   <Link
                     href={`/shop/${product.categorySlug}`}
                     className="hover:underline"
@@ -154,54 +160,66 @@ export default function Product({ params }: { params: { product: string } }) {
                   <ChevronRight className="h-2 w-2 m-auto" />
                   {product.flower}
                 </span>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm sm:text-base text-gray-700">
                   Stock:{" "}
                   <span className="underline text-orange-500 hover:text-yellow-400">
                     {product.quantity}
                   </span>
                 </p>
               </div>
-              <h2 className="text-4xl font-bold text-gray-800 mb-2">
+              <h2 className="text-sm sm:text-sm font-bold text-gray-800 mb-8">
                 {product.name}
               </h2>
-              <div className="flex justify-center items-center mb-2 p-12">
+              <div className="flex justify-center items-center mb-2 p-2 sm:p-2">
                 {product.sale ? (
                   <>
-                    <span className="text-4xl font-bold text-gray-800">
+                    <span className="text-3xl sm:text-4xl font-bold text-gray-800">
                       $<span className="underline">{product.price}</span>
                     </span>
-                    <span className="text-lg text-red-500 line-through ml-2">
+                    <span className="text-lg sm:text-xl text-red-500 line-through ml-2">
                       ${product.originalPrice}
                     </span>
                   </>
                 ) : (
-                  <span className="text-4xl font-bold text-gray-800">
+                  <span className="text-3xl sm:text-4xl font-bold text-gray-800">
                     $<span className="underline">{product.price}</span>
                   </span>
                 )}
               </div>
-              <div className="flex justify-center items-center pt-18">
+              <div className="flex justify-center items-center pt-10 sm:pt-10">
                 <div>
-                  <h4 className="text-xs text-gray-700 underline mb-1">
+                  <h4 className="text-xs sm:text-sm text-gray-700 underline mb-1">
                     Overview:
                   </h4>
-                  <p className="text-sm text-gray-500">{product.description}</p>
+                  <p className="text-sm sm:text-base text-gray-500">
+                    {product.description}
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="mt-auto p-6">
-              <div className="flex flex-col w-full sm:flex-row gap-4 mb-4">
+            <div className="mt-auto p-4 sm:p-6">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <Button
-                  className={`w-full flex items-center justify-center px-6 py-3 text-white rounded shadow-sm transition duration-150 ease-in-out ${
-                    justAdded ? "bg-green-500" : "hover:bg-yellow-400"
+                  className={`w-full items-center justify-center px-4 py-3 text-sm sm:text-base text-white rounded shadow-md transition duration-150 ease-in-out ${
+                    justAdded === product.id
+                      ? "bg-green-500 hover:bg-green-600"
+                      : outOfStock === product.id
+                      ? "bg-red-500 hover:bg-red-600"
+                      : "bg-orange-400 hover:bg-sky-500"
                   }`}
                   onClick={() => handleAddToCart(product)}
                 >
-                  <div className="flex justify-center items-center">
-                    {justAdded ? (
+                  <div className="flex justify-center items-center w-full">
+                    {justAdded === product.id ? (
                       <>
                         <ThumbsUp className="h-5 w-6" />
                         <span className="ml-2">Added!</span>
+                      </>
+                    ) : outOfStock === product.id ? (
+                      <>
+                        <span className="text-base sm:text-base md:text-base ml-2">
+                          Low stock level!
+                        </span>
                       </>
                     ) : (
                       <>
@@ -211,19 +229,17 @@ export default function Product({ params }: { params: { product: string } }) {
                     )}
                   </div>
                 </Button>
-                <Link href="/checkout">
-                  <Button
-                    className="w-full flex items-center justify-center px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white rounded shadow-sm transition duration-150 ease-in-out"
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    <div className="flex justify-center items-center">
+                <Link href="/checkout" onClick={() => handleAddToCart(product)}>
+                  <Button className="w-full items-center justify-center px-4 py-3 bg-gray-700 hover:bg-gray-800 text-white rounded shadow-md transition duration-150 ease-in-out">
+                    <div className="flex justify-center items-center w-full">
                       <span className="mr-2">Checkout Now</span>
                       <ExternalLink className="h-5 w-6" />
                     </div>
                   </Button>
                 </Link>
               </div>
-              <div className="flex justify-center gap-4 text-sm text-gray-500">
+
+              <div className="flex justify-center gap-4 text-sm sm:text-base text-gray-500">
                 <div className="flex items-center gap-1">
                   <CheckCheck className="h-5 w-5 text-gray-500" />
                   <span>Incl. Taxes & fees</span>

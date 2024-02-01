@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Menu, X } from "lucide-react";
 import { ShoppingCart } from "./cart/Cart";
 
 const links = [
@@ -19,6 +19,7 @@ export default function Navbar() {
   const [isHover, setHover] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/categories", {
@@ -48,35 +49,56 @@ export default function Navbar() {
   };
 
   const pathName = usePathname();
+
+  const toggleDropdown = (
+    visibility: boolean | ((prevState: boolean) => boolean)
+  ) => {
+    if (isMenuOpen) {
+      setDropdownVisible(visibility);
+    }
+  };
+
+  const toggleMobileMenu = () => {
+    setMenuOpen(!isMenuOpen);
+    if (isDropdownVisible) {
+      setDropdownVisible(false);
+    }
+  };
+
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 bg-white border-b">
         <div className="flex items-center justify-between mx-auto px-4 h-14 sm:h-24 lg:max-w-7xl lg:px-6">
           <Link href="/">
-            <h1 className="md:text-4xl text-2xl text-black">
-              ALOHA
-              <span className="text-primary">KUSH</span>
-            </h1>
+            <span className="md:text-4xl text-2xl text-black">
+              ALOHA<span className="text-primary">KUSH</span>
+            </span>
           </Link>
-          <nav className="hidden gap-6 lg:flex 2xl:ml-16">
+          <nav className="hidden lg:flex gap-6 ml-auto">
             {links.map((link, index) => (
               <div key={index}>
                 {link.name === "Shop" ? (
                   <div
                     className="relative"
-                    onMouseEnter={() => setDropdownVisible(true)}
-                    onMouseLeave={() => setDropdownVisible(false)}
+                    onMouseEnter={() => toggleDropdown(true)}
+                    onMouseLeave={() => toggleDropdown(false)}
                   >
                     <Link href={link.href}>
-                      <span className="text-lg text-gray-600 transition duration-100 hover:text-primary">
+                      <span
+                        className={`text-lg ${
+                          pathName.startsWith(link.href)
+                            ? "text-primary"
+                            : "text-gray-600"
+                        } transition duration-100 hover:text-primary`}
+                      >
                         {link.name}
                       </span>
                     </Link>
                     {isDropdownVisible && (
                       <div className="absolute left-0 w-56 py-2 bg-white rounded shadow-xl">
-                        {categories.map((category) => (
+                        {categories.map((category, catIndex) => (
                           <Link
-                            key={category}
+                            key={catIndex}
                             href={`/shop/${category
                               .toLowerCase()
                               .replace(/\s+/g, "-")}`}
@@ -95,8 +117,8 @@ export default function Navbar() {
                       className={`text-lg ${
                         pathName === link.href
                           ? "text-primary"
-                          : "text-gray-600 transition duration-100 hover:text-primary"
-                      }`}
+                          : "text-gray-600"
+                      } transition duration-100 hover:text-primary`}
                     >
                       {link.name}
                     </span>
@@ -105,24 +127,48 @@ export default function Navbar() {
               </div>
             ))}
           </nav>
-
-          <div className="flex divide-x">
-            <Button
-              variant={"link"}
-              className="flex flex-col gap-y-1.5 h-12 w-12 sm:h-20 sm:w-20 md:h-24 md:w-24 rounded-none"
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => setHover(false)}
-              onClick={openCart}
-            >
-              <ShoppingBag color={isHover ? "#0284c7" : "#fe8c00"} />
-              <span className="hidden text-xs text-gray-500 sm:block">
-                Cart
-              </span>
-            </Button>
+          <div className="relative flex items-center">
+            <div className="flex divide-x">
+              <Button
+                variant={"link"}
+                className="flex flex-col gap-y-1.5 h-12 w-12 sm:h-20 sm:w-20 md:h-24 md:w-24 rounded-none"
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+                onClick={openCart}
+              >
+                <ShoppingBag color={isHover ? "#0284c7" : "#fe8c00"} />
+                <span className="hidden text-xs text-gray-500 sm:block">
+                  Cart
+                </span>
+              </Button>
+            </div>
+            <div className="lg:hidden">
+              <Button
+                variant={"link"}
+                className="p-2"
+                onClick={toggleMobileMenu}
+              >
+                {isMenuOpen ? (
+                  <X size={24} />
+                ) : (
+                  <Menu size={24} color="#fe8c00" />
+                )}
+              </Button>
+              {isMenuOpen && (
+                <div className="absolute top-full right-0 w-56 py-2 bg-white rounded shadow-xl">
+                  {links.map((link, index) => (
+                    <Link key={index} href={link.href}>
+                      <span className="block px-4 py-2 text-gray-800 hover:bg-sky-400 hover:text-white">
+                        {link.name}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
-      {/* Render ShoppingCart and pass the isCartOpen as a prop */}
       <ShoppingCart isOpen={isCartOpen} setCartOpen={setCartOpen} />
     </>
   );

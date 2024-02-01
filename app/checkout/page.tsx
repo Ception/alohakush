@@ -60,6 +60,8 @@ export default function Checkout() {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
       formSchema.parse(formData);
 
@@ -91,7 +93,6 @@ export default function Checkout() {
       } else {
         setSentEmail(false);
       }
-      setLoading(false);
     } catch (error) {
       if (error instanceof z.ZodError) {
         let validationErrors: Record<string, string> = {};
@@ -100,11 +101,13 @@ export default function Checkout() {
         }
         setValidationMessages(validationErrors);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return sentEmail ? (
-    <div className="container mx-auto p-6 flex items-center justify-center">
+    <div className="container mx-auto p-6 flex flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center">
         <CheckCircle2 className="h-12 w-12 text-green-500" />
         <h2 className="text-2xl font-bold text-center mt-4">Order Received</h2>
@@ -113,9 +116,9 @@ export default function Checkout() {
     </div>
   ) : (
     <div className="container mx-auto p-6">
-      <div className="flex flex-wrap -mx-4">
+      <div className="flex flex-col md:flex-row md:flex-wrap -mx-4">
         {/* Checkout Form */}
-        <div className="w-full lg:w-2/3 px-4">
+        <div className="w-full md:w-2/3 px-4">
           <div className="bg-white p-6 rounded shadow-sm">
             <h2 className="text-2xl font-bold mb-5">Billing Details</h2>
             <form onSubmit={handleSubmit}>

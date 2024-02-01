@@ -21,7 +21,6 @@ export async function GET(req: NextRequest, { params }: any) {
     }
 
     const jsonResponse = await response.json();
-    console.log(`response ${JSON.stringify(jsonResponse)}`);
     return new Response(JSON.stringify(jsonResponse), {
       status: 200,
       headers: {
