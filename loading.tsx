@@ -4,11 +4,10 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 export default function Loading() {
   return (
-    <div className="w-full flex justify-center items-center relative">
-      <div className="w-1/2 flex flex-col justify-center items-center">
-        <div className="self-center">
-          <BeatLoader color="#fe8c00" loading={true} size={5} />
-        </div>
+    <div className="fixed inset-0 flex justify-center items-center z-40">
+      <div className="absolute inset-0 bg-white opacity-75"></div>
+      <div className="z-10 mt-14 sm:mt-24">
+        <BeatLoader color="#fe8c00" loading={true} size={15} />
       </div>
     </div>
   );
