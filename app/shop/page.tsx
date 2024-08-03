@@ -18,12 +18,22 @@ interface Category {
   imageUrl: StaticImageData;
 }
 
+async function getCategories(): Promise<Category[]> {
+  const response = await fetch("/api/categories");
+  if (!response.ok) {
+    throw new Error(`Error: ${response.status}`);
+  }
+  const jsonResponse = await response.json();
+  return jsonResponse.data.map((cat: any, index: number) => ({
+    name: cat.attributes.name,
+    imageUrl: images[index % images.length],
+  }));
+}
+
 export default function Shop() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [loadedImages, setLoadedImages] = useState<boolean[]>(
-    new Array(images.length).fill(false)
-  );
+  const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
 
   const handleImageLoad = useCallback((index: number) => {
     setLoadedImages((prevLoadedImages) => {
@@ -34,22 +44,10 @@ export default function Shop() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/categories")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((jsonResponse) => {
-        const fetchedCategories = jsonResponse.data.map(
-          (cat: any, index: number) => ({
-            name: cat.attributes.name,
-            imageUrl: images[index % images.length],
-          })
-        );
+    getCategories()
+      .then((fetchedCategories) => {
         setCategories(fetchedCategories);
-        setLoadedImages(new Array(fetchedCategories.length).fill(true)); // Set images as loaded
+        setLoadedImages(new Array(fetchedCategories.length).fill(false));
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
@@ -88,7 +86,7 @@ export default function Shop() {
                     alt={category.name}
                     className="w-full h-full object-cover md:w-150 md:h-150"
                     onLoad={() => handleImageLoad(index)}
-                    priority={index < 8} // Prioritize first 8 images
+                    priority={index < 8}
                   />
                 </span>
               </Link>

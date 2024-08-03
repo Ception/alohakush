@@ -63,7 +63,7 @@ export default function About() {
         </div>
 
         {/* right column */}
-        <div className="flex w-full sm:w-3/4 lg:w-2/3">
+        <div className="flex w-full sm:w-3/4 lg:w-2/3 mt-[-35px]">
           <div className="relative left-16 top-12 z-10 overflow-hidden rounded-xl bg-gray-100 shadow-lg">
             <Image
               src={image10}
