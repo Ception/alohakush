@@ -68,6 +68,7 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 bg-white border-b">
+        <link rel="icon" href="/favicon.ico" />
         <div className="flex items-center justify-between mx-auto px-4 h-14 sm:h-24 lg:max-w-7xl lg:px-6">
           <Link href="/">
             <span className="md:text-4xl text-2xl text-black">

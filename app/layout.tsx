@@ -10,6 +10,14 @@ export const metadata: Metadata = {
   title: "AlohaKush — Premium Cannabis Delivery",
   description:
     "Discover AlohaKush, Ontario's premier cannabis delivery service. Offering a diverse selection of high-quality strains, edibles, and accessories, we bring the best of cannabis right to your doorstep. Experience fast, discreet, and reliable delivery across Ontario with AlohaKush. Shop now for an exceptional cannabis journey!",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+        href: "/favicon.ico",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
